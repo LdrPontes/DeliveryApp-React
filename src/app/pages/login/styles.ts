@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactComponent as LoginImg } from '../assets/login.svg';
+import { ReactComponent as LoginImg } from '../../assets/login.svg';
 
 export const Container = styled.div`
     width: 100%;
