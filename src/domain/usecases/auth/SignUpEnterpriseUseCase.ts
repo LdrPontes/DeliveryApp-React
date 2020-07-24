@@ -5,11 +5,11 @@ import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/auth/IA
 import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/auth/AuthEnterpriseRepositoryLocal";
 import { EnterpriseUser } from "../../entities/EnterpriseUser";
 
-export class SignInEnterpriseUseCase extends UseCase<SignInEnterpriseResponse, SignInEnterpriseParams>{
+export class SignUpEnterpriseUseCase extends UseCase<SignUpEnterpriseResponse, SignUpEnterpriseParams>{
     repository: IAuthEnterpriseRepository = new AuthEnterpriseRepository()
     local: IAuthEnterpriseRepositoryLocal = new AuthEnterpriseRepositoryLocal()
 
-    async buildUseCase(params: SignInEnterpriseParams): Promise<SignInEnterpriseResponse> {
+    async buildUseCase(params: SignUpEnterpriseParams): Promise<SignUpEnterpriseResponse> {
         try {
             const result = await this.repository.signInEnterprise(params.email, params.password)
 
@@ -17,7 +17,7 @@ export class SignInEnterpriseUseCase extends UseCase<SignInEnterpriseResponse, S
 
             this.local.saveToken(result[1])
 
-            return new SignInEnterpriseResponse(result[0])
+            return new SignUpEnterpriseResponse(result[0])
         } catch (error) {
             throw error
         }
@@ -25,7 +25,7 @@ export class SignInEnterpriseUseCase extends UseCase<SignInEnterpriseResponse, S
 }
 
 
-export class SignInEnterpriseResponse {
+export class SignUpEnterpriseResponse {
     user: EnterpriseUser
 
     constructor(user: EnterpriseUser) {
@@ -33,11 +33,15 @@ export class SignInEnterpriseResponse {
     }
 }
 
-export class SignInEnterpriseParams {
+export class SignUpEnterpriseParams {
+    name: string
+    telephone: string
     email: string
     password: string
 
-    constructor(email: string, password: string) {
+    constructor(name: string, telephone: string, email: string, password: string) {
+        this.name = name
+        this.telephone = telephone
         this.email = email
         this.password = password
     }

@@ -2,7 +2,7 @@ import React from 'react';
 
 // import { Container } from './styles';
 
-function Main() {
+function Main(): JSX.Element {
     return <h1>Main</h1>;
 }
 

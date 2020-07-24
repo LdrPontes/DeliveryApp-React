@@ -15,20 +15,20 @@ class LoginPage extends Component {
         isDesktop: false,
     };
 
-    componentDidMount() {
+    componentDidMount(): void {
         window.addEventListener('resize', this.resize.bind(this));
         this.resize();
     }
 
-    resize() {
+    resize(): void {
         this.setState({ isDesktop: window.innerWidth >= 760 });
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         window.removeEventListener('resize', this.resize.bind(this));
     }
 
-    render() {
+    render(): JSX.Element {
         if (!this.state.isDesktop) {
             return (
                 <>
@@ -55,6 +55,7 @@ class LoginPage extends Component {
             );
         }
     }
+    
 }
 
 export default LoginPage;

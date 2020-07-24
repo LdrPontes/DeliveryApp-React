@@ -54,6 +54,7 @@ export const StyledPrimaryButton = styled(Button)`
     width: 100%;
     height: 50px;
     margin-top: 32px;
+    margin-bottom: 32px;
     background-color: #880e4f;
     border-radius: 30px;
     &:hover {
