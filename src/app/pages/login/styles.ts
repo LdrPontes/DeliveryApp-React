@@ -17,6 +17,10 @@ export const Elipse = styled.div`
     -ms-transform: translateY(-25%);
     transform: translateY(-25%);
     z-index: -1;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 200%;
+    max-height: 100%;
 `;
 
 export const StyledLoginImg = styled(LoginImg)`
@@ -27,6 +31,10 @@ export const StyledLoginImg = styled(LoginImg)`
     left: 7%;
     -ms-transform: translateY(100%);
     transform: translateY(100%);
+    min-width: 30%;
+    max-width: 30%;
+    min-height: 35%;
+    max-height: 35%;
 `;
 
 export const RightColumnContainer = styled.div`

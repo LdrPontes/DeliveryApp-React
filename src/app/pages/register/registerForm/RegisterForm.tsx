@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import {
-    Title,
     StyledSmall,
     Container,
     RowContainer,
@@ -29,12 +28,18 @@ class RegisterForm extends Component {
         history.push('/login')
     }
 
+    onClickEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            this.model.handlerSignUp()
+        }
+    }
+
     render(): JSX.Element {
         return (
-            this.model.isSuccess ? <Redirect to="/"></Redirect> :
+            this.model.isSuccess ? <Redirect to="/enterprise-register"></Redirect> :
                 <Container>
                     <HeaderContainer>
-                        <Title>Bem-vindo</Title>
+                        <h1>Bem-vindo</h1>
                         <StyledSmall>Faça o cadastro para continuar</StyledSmall>
                     </HeaderContainer>
                     <div>
@@ -72,6 +77,7 @@ class RegisterForm extends Component {
                             variant="outlined"
                             type={this.model.showPassword ? 'text' : 'password'}
                             value={this.model.password}
+                            onKeyDown={this.onClickEnter}
                             onChange={(e) => this.model.password = e.target.value}
                             InputProps={{ // <-- This is where the toggle button is added.
                                 endAdornment: (

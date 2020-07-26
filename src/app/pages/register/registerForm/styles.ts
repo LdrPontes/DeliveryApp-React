@@ -24,10 +24,6 @@ export const HeaderContainer = styled.div`
     margin-bottom: 16px;
 `;
 
-export const Title = styled.h1`
-    font-family: 'Roboto', sans-serif;
-`;
-
 export const StyledSmall = styled.small`
     font-family: 'Roboto', sans-serif;
     color: #9e9e9e;

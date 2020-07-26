@@ -11,7 +11,7 @@ export class SignUpEnterpriseUseCase extends UseCase<SignUpEnterpriseResponse, S
 
     async buildUseCase(params: SignUpEnterpriseParams): Promise<SignUpEnterpriseResponse> {
         try {
-            const result = await this.repository.signInEnterprise(params.email, params.password)
+            const result = await this.repository.signUpEnterprise(params.name, params.telephone, params.email, params.password)
 
             this.local.saveEnterpriseUser(result[0])
 

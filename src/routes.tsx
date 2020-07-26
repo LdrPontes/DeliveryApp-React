@@ -5,6 +5,7 @@ import Main from './app/pages/main';
 import LoginPage from './app/pages/login/LoginPage';
 import RegisterPage from './app/pages/register/RegisterPage';
 import history from './history';
+import EnterpriseRegisterPage from './app/pages/enterpriseRegister/EnterpriseRegisterPage';
 
 export default function Routes() {
     return (
@@ -14,6 +15,7 @@ export default function Routes() {
                 <Route path="/" exact component={Main} />
                 <Route path="/login" component={LoginPage} />
                 <Route path="/register" component={RegisterPage} />
+                <Route path="/enterprise-register" component={EnterpriseRegisterPage} />
             </Switch>
             </div>
         </Router>

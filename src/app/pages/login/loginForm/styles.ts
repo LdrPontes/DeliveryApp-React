@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
@@ -24,30 +23,9 @@ export const HeaderContainer = styled.div`
     margin-bottom: 16px;
 `;
 
-export const Title = styled.h1`
-    font-family: 'Roboto', sans-serif;
-`;
-
 export const StyledSmall = styled.small`
     font-family: 'Roboto', sans-serif;
     color: #9e9e9e;
-`;
-
-export const StyledTextField = styled(TextField)`
-    margin-top: 16px;
-    width: 100%;
-
-    label.Mui-focused {
-        color: #880e4f;
-    }
-    .MuiOutlinedInput-root {
-        fieldset {
-            border-color: #000000;
-        }
-        &.Mui-focused fieldset {
-            border-color: #880e4f;
-        }
-    }
 `;
 
 export const StyledPrimaryButton = styled(Button)`

@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import { observer } from "mobx-react"
 import {
-    Title,
     StyledSmall,
     Container,
     RowContainer,
     HeaderContainer,
-    StyledTextField,
     StyledPrimaryButton,
     StyledGreyButton,
     StyledDivider,
@@ -22,6 +20,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Redirect } from 'react-router-dom';
 import history from "../../../../history";
+import { StyledTextField } from '../../../global/globalStyles';
 
 @observer
 class LoginForm extends Component {
@@ -37,7 +36,7 @@ class LoginForm extends Component {
             this.model.isSuccess ? <Redirect to="/"></Redirect> :
             <Container>
                 <HeaderContainer>
-                    <Title>Bem-vindo</Title>
+                    <h1>Bem-vindo</h1>
                     <StyledSmall>Faça o login para continuar</StyledSmall>
                 </HeaderContainer>
                 <div>

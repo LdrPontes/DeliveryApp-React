@@ -58,14 +58,12 @@ export class LoginFormViewModel {
         if(this.email === '') {
             this.errorEmail = true
             this.errorEmailMsg = 'Informe um e-mail'
-            this.isLoading = false
             return true
         }         
 
         if(this.password === '') {
             this.errorPassword = true
             this.errorPasswordMsg = 'Informe uma senha'
-            this.isLoading = false
             return true
         }    
 
@@ -99,6 +97,7 @@ export class LoginFormViewModel {
         try {
 
             if(this.hasFieldErrors()){
+                this.isLoading = false
                 return
             }
 

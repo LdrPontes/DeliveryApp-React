@@ -17,6 +17,10 @@ export const Elipse = styled.div`
     -ms-transform: translateY(-25%);
     transform: translateY(-25%);
     z-index: -1;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 200%;
+    max-height: 100%;
 `;
 
 export const StyledFormImg = styled(FormImg)`
@@ -28,6 +32,10 @@ export const StyledFormImg = styled(FormImg)`
     -ms-transform: translateY(25%);
     transform: translateY(25%);
     z-index: 0;
+    min-width: 30%;
+    max-width: 30%;
+    min-height: 70%;
+    max-height: 70%;
 `;
 
 export const LeftColumnContainer = styled.div`
