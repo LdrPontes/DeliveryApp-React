@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Container, Elipse, StyledFormImg, FormContainer, LeftColumnContainer } from "./styles";
 import RegisterForm from "./registerForm/RegisterForm";
 
+class RegisterPage extends Component {
 
- class RegisterPage extends Component {
     state = {
         isDesktop: false,
     };
@@ -25,29 +25,29 @@ import RegisterForm from "./registerForm/RegisterForm";
         if (!this.state.isDesktop) {
             return (
                 <>
-                <Container>
-                    <FormContainer>
-                        <RegisterForm></RegisterForm>
-                    </FormContainer>
-                </Container>
-            </>
+                    <Container>
+                        <FormContainer>
+                            <RegisterForm></RegisterForm>
+                        </FormContainer>
+                    </Container>
+                </>
             );
         } else {
             return (
                 <>
-                <Container>
-                    <StyledFormImg></StyledFormImg>
-                </Container>
-                <Elipse></Elipse>
-                <LeftColumnContainer>
-                    <FormContainer>
-                        <RegisterForm></RegisterForm>
-                    </FormContainer>
-                </LeftColumnContainer>
-            </>
+                    <Container>
+                        <StyledFormImg></StyledFormImg>
+                    </Container>
+                    <Elipse></Elipse>
+                    <LeftColumnContainer>
+                        <FormContainer>
+                            <RegisterForm></RegisterForm>
+                        </FormContainer>
+                    </LeftColumnContainer>
+                </>
             );
         }
     }
 }
- 
+
 export default RegisterPage;

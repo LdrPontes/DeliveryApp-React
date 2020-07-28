@@ -7,7 +7,7 @@ import { AppError } from "../../../../domain/utils/AppError"
 export class RegisterFormViewModel {
 
     signUpEnterpriseUseCase = new SignUpEnterpriseUseCase()
-
+    
     @observable
     isLoading = false
     
