@@ -28,6 +28,7 @@ export class AuthEnterpriseRepositoryLocal implements IAuthEnterpriseRepositoryL
     
     async saveToken(token: string): Promise<void> {
         try {
+            console.log('Salvou Token ' + token)
             sessionStorage.setItem('token', token)
         } catch (error) {
             console.log(error)

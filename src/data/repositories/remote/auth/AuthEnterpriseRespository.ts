@@ -1,6 +1,6 @@
 import { IAuthEnterpriseRepository } from "../../../../domain/repositories/remote/auth/IAuthEnterpriseRepository";
 import { EnterpriseUser } from "../../../../domain/entities/EnterpriseUser";
-import { instance } from '../../utils/RemoteConnection'
+import { api } from '../../utils/RemoteConnection'
 import { AppError } from "../../../../domain/utils/AppError";
 
 export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
@@ -8,7 +8,7 @@ export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
     async signInEnterprise(email: string, password: string): Promise<[EnterpriseUser, string]> {
         try {
 
-            const response = await instance.post('/enterprise/auth', { email: email, password: password })
+            const response = await api.post('/enterprise/auth', { email: email, password: password })
 
             return [
                 new EnterpriseUser(response.data.enterprise_user.id, response.data.enterprise_user.name, response.data.enterprise_user.telephone,
@@ -26,7 +26,7 @@ export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
     async signUpEnterprise(name: string, telephone: string, email: string, password: string): Promise<[EnterpriseUser, string]> {
         try {
 
-            const response = await instance.post('/enterprise/register', { name: name, telephone: telephone, email: email, password: password })
+            const response = await api.post('/enterprise/register', { name: name, telephone: telephone, email: email, password: password })
 
             return [
                 new EnterpriseUser(response.data.enterprise_user.id, response.data.enterprise_user.name, response.data.enterprise_user.telephone,

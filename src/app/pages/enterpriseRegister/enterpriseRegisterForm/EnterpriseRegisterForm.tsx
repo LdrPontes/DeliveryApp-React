@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import { StyledTextField, StyledFormControl } from "../../../global/globalStyles";
 import InputMask from 'react-input-mask';
 import { StyledPrimaryButton, StyledCircularProgress } from "../../login/loginForm/styles";
+import AvatarInput from "../../../components/AvatarInput/AvatarInput";
 
 @observer
 class EnterpriseRegisterForm extends Component {
@@ -14,13 +15,29 @@ class EnterpriseRegisterForm extends Component {
 
     state = {}
 
+    async componentDidMount(): Promise<void> {
+        await this.model.readAllCategories()
+    }
+
     handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
         this.model.typeDocument = event.target.value;
     };
 
+    handleImageChange(event: any): void {
+        if (event.target.files && event.target.files[0]) {
+            this.model.preview = URL.createObjectURL(event.target.files[0])
+        }
+    }
+
+    handleKeyPress = async (event: any) => {
+        if (event.key === 'Tab') {
+            await this.model.getAddressByCep()
+        }
+    }
     render(): JSX.Element {
         return (
             <Container>
+                <AvatarInput preview={this.model.preview} handlerImageChange={(e) => this.handleImageChange(e)}></AvatarInput>
                 <LeftContainer>
                     <Title>Tipo de documento:</Title>
                     <FormControl>
@@ -51,21 +68,39 @@ class EnterpriseRegisterForm extends Component {
                         variant="outlined"
                         type="text" />}
                 </InputMask>
-                <InputMask mask='99999-999' value={this.model.cep} maskChar=" " onChange={(e) => this.model.cep = e.target.value}>
+                <InputMask mask='99999-999' value={this.model.cep} maskChar=" " onChange={(e) => this.model.cep = e.target.value} >
                     {() => <StyledTextField
                         label="CEP"
                         variant="outlined"
-                        type="text" />}
+                        type="text"
+                        onKeyDown={(e) => this.handleKeyPress(e)} />}
                 </InputMask>
+                {
+                    this.model.address !== '' ?
+                        <>
+                            <StyledTextField
+                                label="Endereço"
+                                variant="outlined"
+                                type="text"
+                                disabled
+                                value={this.model.address} />
+                            <StyledTextField
+                                label="Número"
+                                variant="outlined"
+                                type="text"
+                                value={this.model.number} />
+                        </>
+                        : <></>
+                }
                 <StyledFormControl variant="outlined" >
                     <InputLabel id="demo-simple-select-outlined-label">Seguimento</InputLabel>
                     <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         label="Seguimento">
-                            {this.model.getCategories().map((category, index) => {
-                                return (<MenuItem key={index} value={index}>{category}</MenuItem>);
-                            })}
+                        {this.model.categories.map(category => {
+                            return (<MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>);
+                        })}
                     </Select>
                 </StyledFormControl>
                 <Box borderRadius="50%">
