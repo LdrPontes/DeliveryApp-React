@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Radio from '@material-ui/core/Radio';
+import { StyledTextField } from '../../../global/globalStyles';
 
 export const Container = styled.div`
     margin: auto;
@@ -13,6 +14,11 @@ export const RowContainer = styled.div`
     display: flex;
     align-items: center;
     text-align: center !important;
+`;
+
+export const NumberInput = styled(StyledTextField)`
+    width: 200px;
+    margin-left: 16px;
 `;
 
 export const LeftContainer = styled.div`

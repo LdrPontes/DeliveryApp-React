@@ -4,7 +4,6 @@ import { ReactComponent as FormImg } from '../../assets/forms.svg';
 export const Container = styled.div`
     width: 100%;
     height: 100%;
-    position: fixed;
 `;
 
 export const Elipse = styled.div`

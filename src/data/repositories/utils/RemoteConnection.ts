@@ -4,10 +4,13 @@ const token = sessionStorage.getItem('token')
 
 export const api = axios.create({
     baseURL: 'http://localhost:3333',
-    timeout: 1000,
-    headers: {'Authorization': `Bearer ${token}`}
-  });
+    timeout: 10000,
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Access-Control-Allow-Origin': '*'
+    }
+});
 
-  export const instance = axios.create({
+export const instance = axios.create({
     timeout: 1000
-  });
+});
