@@ -7,6 +7,7 @@ import { StyledTextField, StyledFormControl } from "../../../global/globalStyles
 import InputMask from 'react-input-mask';
 import { StyledPrimaryButton, StyledCircularProgress } from "../../login/loginForm/styles";
 import AvatarInput from "../../../components/AvatarInput/AvatarInput";
+import history from "../../../../history";
 
 @observer
 class EnterpriseRegisterForm extends Component {
@@ -14,10 +15,6 @@ class EnterpriseRegisterForm extends Component {
     model = new EnterpriseRegisterFormViewModel()
 
     state = {}
-
-    async componentDidMount(): Promise<void> {
-        await this.model.readAllCategories()
-    }
 
     handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
         this.model.typeDocument = event.target.value;
@@ -32,11 +29,18 @@ class EnterpriseRegisterForm extends Component {
 
     handleCategoryChange(event: any): void {
         this.model.category = event.target.value
-        console.log('Selected: ' + event.target.value || " ")
+    }
+
+
+    componentDidMount(): void {
+        this.model.readAllCategories()
     }
 
     render(): JSX.Element {
-        console.log('Carregou novamente')
+        if(this.model.isSuccess){
+            history.push('/')
+            return (<></>)
+        }
         return (
             <Container>
                 <AvatarInput preview={this.model.preview} handlerImageChange={(e) => this.handleImageChange(e)}></AvatarInput>

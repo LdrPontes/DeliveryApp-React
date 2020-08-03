@@ -1,5 +1,5 @@
 import { IEnterpriseRepository } from "../../../../domain/repositories/remote/enterprise/IEnterpriseRepository";
-import { api } from "../../utils/RemoteConnection";
+import api from "../../utils/RemoteConnection";
 import { Enterprise } from "../../../../domain/entities/Enterprise";
 import { AppError } from "../../../../domain/utils/AppError";
 

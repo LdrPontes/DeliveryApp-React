@@ -114,7 +114,7 @@ export class RegisterFormViewModel {
     @action
     async handlerSignUp(): Promise<void> {
         this.setDefaultValues()
-
+        this.isLoading = true
         try {
 
             if(this.hasFieldErrors()){

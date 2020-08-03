@@ -6,7 +6,7 @@ export class AuthEnterpriseRepositoryLocal implements IAuthEnterpriseRepositoryL
     
     async saveEnterpriseUser(enterpriseUser: EnterpriseUser): Promise<void> {
         try {
-            localStorage.setItem('enterprise_user', JSON.stringify(enterpriseUser))
+            await localStorage.setItem('enterprise_user', JSON.stringify(enterpriseUser))
         } catch (error) {
             console.log(error)
             throw error
@@ -15,7 +15,7 @@ export class AuthEnterpriseRepositoryLocal implements IAuthEnterpriseRepositoryL
     
     async getEnterpriseUser(): Promise<EnterpriseUser | null> {
         try {
-            const result = localStorage.getItem('enterprise_user')
+            const result = await localStorage.getItem('enterprise_user')
             if(result != null)
                 return JSON.parse(result)
             else
@@ -28,8 +28,7 @@ export class AuthEnterpriseRepositoryLocal implements IAuthEnterpriseRepositoryL
     
     async saveToken(token: string): Promise<void> {
         try {
-            console.log('Salvou Token ' + token)
-            sessionStorage.setItem('token', token)
+            await sessionStorage.setItem('token', token)
         } catch (error) {
             console.log(error)
             throw error
@@ -38,7 +37,7 @@ export class AuthEnterpriseRepositoryLocal implements IAuthEnterpriseRepositoryL
     
     async getToken(): Promise<string | null> {
         try {
-            return sessionStorage.getItem('token')
+            return await sessionStorage.getItem('token')
         } catch (error) {
             console.log(error)
             throw error

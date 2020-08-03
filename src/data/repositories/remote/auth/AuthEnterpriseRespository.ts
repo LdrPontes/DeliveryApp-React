@@ -1,6 +1,6 @@
 import { IAuthEnterpriseRepository } from "../../../../domain/repositories/remote/auth/IAuthEnterpriseRepository";
 import { EnterpriseUser } from "../../../../domain/entities/EnterpriseUser";
-import { api } from '../../utils/RemoteConnection'
+import api from '../../utils/RemoteConnection'
 import { AppError } from "../../../../domain/utils/AppError";
 
 export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
@@ -12,7 +12,7 @@ export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
 
             return [
                 new EnterpriseUser(response.data.enterprise_user.id, response.data.enterprise_user.name, response.data.enterprise_user.telephone,
-                    response.data.enterprise_user.email, ''),
+                    response.data.enterprise_user.email, '', response.data.enterprise_user.enterprise),
 
                 response.data.token
             ]
@@ -30,7 +30,7 @@ export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
 
             return [
                 new EnterpriseUser(response.data.enterprise_user.id, response.data.enterprise_user.name, response.data.enterprise_user.telephone,
-                    response.data.enterprise_user.email, ''),
+                    response.data.enterprise_user.email, '', null),
 
                 response.data.token
             ]

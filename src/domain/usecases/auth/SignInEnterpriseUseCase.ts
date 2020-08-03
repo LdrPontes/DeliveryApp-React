@@ -13,9 +13,9 @@ export class SignInEnterpriseUseCase extends UseCase<SignInEnterpriseResponse, S
         try {
             const result = await this.repository.signInEnterprise(params.email, params.password)
 
-            this.local.saveEnterpriseUser(result[0])
+            await this.local.saveEnterpriseUser(result[0])
 
-            this.local.saveToken(result[1])
+            await this.local.saveToken(result[1])
 
             return new SignInEnterpriseResponse(result[0])
         } catch (error) {

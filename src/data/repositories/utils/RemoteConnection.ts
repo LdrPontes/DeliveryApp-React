@@ -1,15 +1,24 @@
 import axios from 'axios';
 
-const token = sessionStorage.getItem('token')
-
-export const api = axios.create({
+const api = axios.create({
     baseURL: 'http://localhost:3333',
     timeout: 10000,
     headers: {
-        'Authorization': `Bearer ${token}`,
         'Access-Control-Allow-Origin': '*'
     }
 });
+
+api.interceptors.request.use(async config => {
+    const token = await sessionStorage.getItem('token')
+    
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    return config;
+});
+
+export default api
 
 export const instance = axios.create({
     timeout: 1000

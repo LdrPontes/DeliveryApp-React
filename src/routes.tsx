@@ -11,12 +11,12 @@ export default function Routes() {
     return (
         <Router history={history}>
             <div>
-            <Switch>
-                <Route path="/" exact component={Main} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/register" component={RegisterPage} />
-                <Route path="/enterprise-register" component={EnterpriseRegisterPage} />
-            </Switch>
+                <Switch>
+                    <Route path="/" exact component={Main} />
+                    <Route path="/login" exact component={LoginPage} />
+                    <Route path="/register" exact component={RegisterPage} />
+                    <Route path="/enterprise-register" exact component={EnterpriseRegisterPage} />
+                </Switch>
             </div>
         </Router>
     );

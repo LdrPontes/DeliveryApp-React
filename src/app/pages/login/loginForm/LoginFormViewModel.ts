@@ -1,14 +1,14 @@
 import { observable, action } from "mobx"
 import { EnterpriseUser } from "../../../../domain/entities/EnterpriseUser"
-import { SignInEnterpriseUseCase, SignInEnterpriseParams} from "../../../../domain/usecases/auth/SignInEnterpriseUseCase"
+import { SignInEnterpriseUseCase, SignInEnterpriseParams } from "../../../../domain/usecases/auth/SignInEnterpriseUseCase"
 import { AppError } from "../../../../domain/utils/AppError"
 
 export class LoginFormViewModel {
     signInEnterpriseUseCase = new SignInEnterpriseUseCase()
-    
+
     @observable
     isLoading = false
-    
+
     @observable
     enterpriseUser: EnterpriseUser | undefined
 
@@ -34,14 +34,14 @@ export class LoginFormViewModel {
     showPassword = false
 
     @observable
-    isSuccess = false
+    redirect = ''
 
     @action
     handlerShowPassword(): void {
         this.showPassword = !this.showPassword
     }
 
-    private setDefaultValues(){
+    private setDefaultValues() {
         this.errorEmail = false
         this.errorEmailMsg = ''
 
@@ -50,28 +50,28 @@ export class LoginFormViewModel {
 
         this.isLoading = true
 
-        this.isSuccess = false
+        this.redirect = ''
     }
 
-    private hasFieldErrors(): boolean{
+    private hasFieldErrors(): boolean {
 
-        if(this.email === '') {
+        if (this.email === '') {
             this.errorEmail = true
             this.errorEmailMsg = 'Informe um e-mail'
             return true
-        }         
+        }
 
-        if(this.password === '') {
+        if (this.password === '') {
             this.errorPassword = true
             this.errorPasswordMsg = 'Informe uma senha'
             return true
-        }    
+        }
 
         return false
     }
 
-    private handlerResponseErrors(error: AppError){
-        switch(error.name){
+    private handlerResponseErrors(error: AppError) {
+        switch (error.name) {
             case 'ENTITY_NOT_FOUND':
                 this.errorEmail = true
                 this.errorEmailMsg = 'Usuário não encontrado.'
@@ -93,28 +93,31 @@ export class LoginFormViewModel {
     async handlerSignIn(): Promise<void> {
 
         this.setDefaultValues()
-
+        this.isLoading = true
         try {
 
-            if(this.hasFieldErrors()){
+            if (this.hasFieldErrors()) {
                 this.isLoading = false
                 return
             }
 
-            await this.signInEnterpriseUseCase.execute(new SignInEnterpriseParams(this.email, this.password))
-        
-            this.isSuccess = true
+            const result = (await this.signInEnterpriseUseCase.execute(new SignInEnterpriseParams(this.email, this.password))).user
+
+            if (result.enterprise != null) {
+                this.redirect = '/'
+            } else {
+                this.redirect = '/enterprise-register'
+            }
+
+            return
 
         } catch (error) {
 
-            if(error instanceof AppError){
-              this.handlerResponseErrors(error)
+            if (error instanceof AppError) {
+                this.handlerResponseErrors(error)
             }
-
-            this.isSuccess = false
         }
 
         this.isLoading = false
-
     }
 }

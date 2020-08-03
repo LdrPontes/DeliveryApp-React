@@ -2,10 +2,13 @@ import { UseCase } from "../../utils/UseCase";
 import { Enterprise } from "../../entities/Enterprise";
 import { IEnterpriseRepository } from "../../repositories/remote/enterprise/IEnterpriseRepository";
 import { EnterpriseRepository } from "../../../data/repositories/remote/enterprise/EnterpriseRepository";
+import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/auth/IAuthEnterpriseRepositoryLocal";
+import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/auth/AuthEnterpriseRepositoryLocal";
 
 export class SaveEnterpriseUseCase extends UseCase<SaveEnterpriseResponse, SaveEnterpriseParams> {
 
     repository: IEnterpriseRepository = new EnterpriseRepository()
+    local: IAuthEnterpriseRepositoryLocal = new AuthEnterpriseRepositoryLocal()
 
     async buildUseCase(params: SaveEnterpriseParams): Promise<SaveEnterpriseResponse> {
 
@@ -18,9 +21,14 @@ export class SaveEnterpriseUseCase extends UseCase<SaveEnterpriseResponse, SaveE
             params.img_type,
             params.address)
 
-        //this.local.saveEnterpriseUser(result[0])
+        const user = await this.local.getEnterpriseUser()
+        
+        if (user != null) {
+            user.enterprise = result
+            await this.local.saveEnterpriseUser(user)
+        }
 
-        //this.local.saveToken(result[1])
+
 
         return new SaveEnterpriseResponse(result)
 

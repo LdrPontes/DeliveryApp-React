@@ -21,19 +21,26 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Redirect } from 'react-router-dom';
 import history from "../../../../history";
 import { StyledTextField } from '../../../global/globalStyles';
+import { isAuthenticated } from '../../../utils/AuthUtil';
 
 @observer
 class LoginForm extends Component {
 
     model = new LoginFormViewModel()
 
-    onClickSignUp(): void{
+    onClickSignUp(): void {
         history.push('/register')
     }
 
     render(): JSX.Element {
+        if (this.model.redirect !== '') {
+            history.push(this.model.redirect)
+            return (<></>)
+        }
+        if (isAuthenticated()) {
+            return <Redirect to='/'></Redirect>
+        }
         return (
-            this.model.isSuccess ? <Redirect to="/"></Redirect> :
             <Container>
                 <HeaderContainer>
                     <h1>Bem-vindo</h1>
@@ -59,27 +66,27 @@ class LoginForm extends Component {
                         onChange={(e) => this.model.password = e.target.value}
                         InputProps={{ // <-- This is where the toggle button is added.
                             endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={() => this.model.handlerShowPassword()}
-                                  onMouseDown={() => this.model.handlerShowPassword()}
-                                >
-                                  {this.model.showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                              </InputAdornment>
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => this.model.handlerShowPassword()}
+                                        onMouseDown={() => this.model.handlerShowPassword()}
+                                    >
+                                        {this.model.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
                             )
-                          }}
+                        }}
                     />
                     <Box borderRadius="50%">
-                        {this.model.isLoading ? 
-                        <StyledPrimaryButton onClick={() => this.model.handlerSignIn()} >
-                            <StyledCircularProgress />
-                        </StyledPrimaryButton>
-                        : <StyledPrimaryButton onClick={() => this.model.handlerSignIn()} >
-                            ENTRAR
+                        {this.model.isLoading ?
+                            <StyledPrimaryButton onClick={() => this.model.handlerSignIn()} >
+                                <StyledCircularProgress />
+                            </StyledPrimaryButton>
+                            : <StyledPrimaryButton onClick={() => this.model.handlerSignIn()} >
+                                ENTRAR
                         </StyledPrimaryButton>}
-                        
+
                     </Box>
                     <RowContainer>
                         <ForgotPasswordText>
