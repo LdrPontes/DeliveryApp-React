@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 
-import Main from './app/pages/main';
+import MainPage from './app/pages/main/MainPage';
 import LoginPage from './app/pages/login/LoginPage';
 import RegisterPage from './app/pages/register/RegisterPage';
 import history from './history';
@@ -12,7 +12,7 @@ export default function Routes() {
         <Router history={history}>
             <div>
                 <Switch>
-                    <Route path="/" exact component={Main} />
+                    <Route path="/" exact component={MainPage} />
                     <Route path="/login" exact component={LoginPage} />
                     <Route path="/register" exact component={RegisterPage} />
                     <Route path="/enterprise-register" exact component={EnterpriseRegisterPage} />
