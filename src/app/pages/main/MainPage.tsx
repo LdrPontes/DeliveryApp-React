@@ -1,24 +1,41 @@
 import React, { Component } from 'react';
 import { isAuthenticated } from '../../utils/AuthUtil'
 import { Redirect } from 'react-router-dom';
-import { Toolbar, Typography, Avatar, IconButton, Box, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
+import { Toolbar, Typography, Avatar, IconButton, Box, List, ListItem, ListItemIcon, Divider } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
-import { StyledAppBar, RightIconContainer, Container, StyledDrawer } from './styles';
+import ListIcon from '@material-ui/icons/List';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import PersonIcon from '@material-ui/icons/Person';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { StyledAppBar, RightIconContainer, Container, StyledDrawer, StyledBarCodeIcon, StyledListItemText, ContentContainer } from './styles';
+import { MainPageViewModel } from './MainPageViewModel';
+import { observer } from 'mobx-react';
+import ProductFragment from '../product/ProductFragment';
+import OptionalFragment from '../optional/OptionalFragment';
+
+@observer
 class MainPage extends Component {
     state = {}
 
-    render() {
+    model = new MainPageViewModel()
+
+    componentDidMount(): void {
+        this.model.getEnterpriseUser()
+    }
+
+    render(): JSX.Element {
         console.log(isAuthenticated())
         if (isAuthenticated())
             return this.body()
         else
             return (<Redirect to='/login'></Redirect>)
     }
-    //TODO ALTERAR PARA VIEWMODEL
+
     private body(): JSX.Element {
         return (<Container>
-            <StyledAppBar position="static">
+            <StyledAppBar position="fixed">
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -26,10 +43,10 @@ class MainPage extends Component {
                         aria-label="open drawer">
                         <MenuIcon />
                     </IconButton>
-                    <Box ml={4} mr={2}><Avatar src={JSON.parse(localStorage.getItem('enterprise_user')!).enterprise.logo_url}/></Box>
+                    <Box ml={4} mr={2}><Avatar src={this.model.user?.enterprise?.logo_url} /></Box>
                     <Typography variant="h6">
                         {
-                            JSON.parse(localStorage.getItem('enterprise_user')!).enterprise.name
+                            this.model.user?.enterprise?.name
                         }
                     </Typography>
                     <RightIconContainer>
@@ -47,25 +64,57 @@ class MainPage extends Component {
             }} PaperProps={{ elevation: 5 }}>
                 <Toolbar />
                 <div>
-                    <List>
-                        {['Produtos', 'Opcionais', 'Catálogo', 'Promoções'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <ExitToApp /> : <MenuIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                    <List >
+                        <ListItem button key={'Produtos'} selected={this.model.position == 0} onClick={() => this.model.position = 0}>
+                            <ListItemIcon><StyledBarCodeIcon /></ListItemIcon>
+                            <StyledListItemText primary={'Produtos'} classes={{
+                                primary: 'listItemText',
+                            }} />
+                        </ListItem>
+                        <ListItem button key={'Opcionais'} selected={this.model.position == 1} onClick={() => this.model.position = 1}>
+                            <ListItemIcon><ListIcon /></ListItemIcon>
+                            <StyledListItemText primary={'Opcionais'} classes={{
+                                primary: 'listItemText',
+                            }} />
+                        </ListItem>
+                        <ListItem button key={'Catálogo'} selected={this.model.position == 2} onClick={() => this.model.position = 2}>
+                            <ListItemIcon><DashboardIcon /> </ListItemIcon>
+                            <StyledListItemText primary={'Catálogo'} classes={{
+                                primary: 'listItemText',
+                            }} />
+                        </ListItem>
+                        <ListItem button key={'Promoções'} selected={this.model.position == 3} onClick={() => this.model.position = 3}>
+                            <ListItemIcon><LocalOfferIcon /></ListItemIcon>
+                            <StyledListItemText primary={'Promoções'} classes={{
+                                primary: 'listItemText',
+                            }} />
+                        </ListItem>
                     </List>
                     <Divider />
                     <List>
-                        {['Perfil', 'Configurações'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <ExitToApp /> : <MenuIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                        <ListItem button key={'Perfil'} selected={this.model.position == 4} onClick={() => this.model.position = 4}>
+                            <ListItemIcon><PersonIcon /></ListItemIcon>
+                            <StyledListItemText primary={'Perfil'} classes={{
+                                primary: 'listItemText',
+                            }} />
+                        </ListItem>
+                        <ListItem button key={'Configurações'} selected={this.model.position == 5} onClick={() => this.model.position = 5}>
+                            <ListItemIcon><SettingsIcon /></ListItemIcon>
+                            <StyledListItemText primary={'Configurações'} classes={{
+                                primary: 'listItemText',
+                            }} />
+                        </ListItem>
                     </List>
                 </div>
             </StyledDrawer>
+            <ContentContainer>{
+                    this.model.position == 0 ? <ProductFragment></ProductFragment>
+                :   this.model.position == 1 ? <OptionalFragment></OptionalFragment>
+                :   <></>
+                
+                }
+            
+            </ContentContainer>
         </Container>)
     }
 }
