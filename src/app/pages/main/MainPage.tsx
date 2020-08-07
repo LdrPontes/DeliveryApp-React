@@ -65,25 +65,25 @@ class MainPage extends Component {
                 <Toolbar />
                 <div>
                     <List >
-                        <ListItem button key={'Produtos'} selected={this.model.position == 0} onClick={() => this.model.position = 0}>
+                        <ListItem button key={'Produtos'} selected={this.model.position === 0} onClick={() => this.model.position = 0}>
                             <ListItemIcon><StyledBarCodeIcon /></ListItemIcon>
                             <StyledListItemText primary={'Produtos'} classes={{
                                 primary: 'listItemText',
                             }} />
                         </ListItem>
-                        <ListItem button key={'Opcionais'} selected={this.model.position == 1} onClick={() => this.model.position = 1}>
+                        <ListItem button key={'Opcionais'} selected={this.model.position === 1} onClick={() => this.model.position = 1}>
                             <ListItemIcon><ListIcon /></ListItemIcon>
                             <StyledListItemText primary={'Opcionais'} classes={{
                                 primary: 'listItemText',
                             }} />
                         </ListItem>
-                        <ListItem button key={'Catálogo'} selected={this.model.position == 2} onClick={() => this.model.position = 2}>
+                        <ListItem button key={'Catálogo'} selected={this.model.position === 2} onClick={() => this.model.position = 2}>
                             <ListItemIcon><DashboardIcon /> </ListItemIcon>
                             <StyledListItemText primary={'Catálogo'} classes={{
                                 primary: 'listItemText',
                             }} />
                         </ListItem>
-                        <ListItem button key={'Promoções'} selected={this.model.position == 3} onClick={() => this.model.position = 3}>
+                        <ListItem button key={'Promoções'} selected={this.model.position === 3} onClick={() => this.model.position = 3}>
                             <ListItemIcon><LocalOfferIcon /></ListItemIcon>
                             <StyledListItemText primary={'Promoções'} classes={{
                                 primary: 'listItemText',
@@ -92,13 +92,13 @@ class MainPage extends Component {
                     </List>
                     <Divider />
                     <List>
-                        <ListItem button key={'Perfil'} selected={this.model.position == 4} onClick={() => this.model.position = 4}>
+                        <ListItem button key={'Perfil'} selected={this.model.position === 4} onClick={() => this.model.position = 4}>
                             <ListItemIcon><PersonIcon /></ListItemIcon>
                             <StyledListItemText primary={'Perfil'} classes={{
                                 primary: 'listItemText',
                             }} />
                         </ListItem>
-                        <ListItem button key={'Configurações'} selected={this.model.position == 5} onClick={() => this.model.position = 5}>
+                        <ListItem button key={'Configurações'} selected={this.model.position === 5} onClick={() => this.model.position = 5}>
                             <ListItemIcon><SettingsIcon /></ListItemIcon>
                             <StyledListItemText primary={'Configurações'} classes={{
                                 primary: 'listItemText',
@@ -108,8 +108,8 @@ class MainPage extends Component {
                 </div>
             </StyledDrawer>
             <ContentContainer>{
-                    this.model.position == 0 ? <ProductFragment></ProductFragment>
-                :   this.model.position == 1 ? <OptionalFragment></OptionalFragment>
+                    this.model.position === 0 ? <ProductFragment></ProductFragment>
+                :   this.model.position === 1 ? <OptionalFragment></OptionalFragment>
                 :   <></>
                 
                 }

@@ -1,6 +1,7 @@
 import { ICategoryRepository } from "../../../../domain/repositories/remote/category/ICategoryRepository";
 import { Category } from "../../../../domain/entities/Category";
 import api from "../../utils/RemoteConnection";
+import { AppError } from "../../../../domain/utils/AppError";
 
 export class CategoryRepository implements ICategoryRepository {
 
@@ -12,7 +13,7 @@ export class CategoryRepository implements ICategoryRepository {
             return response
     
         } catch (error) {
-            throw error
+            throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
         }
     }
 

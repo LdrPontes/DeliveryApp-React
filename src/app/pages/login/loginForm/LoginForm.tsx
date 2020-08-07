@@ -6,12 +6,9 @@ import {
     Container,
     RowContainer,
     HeaderContainer,
-    StyledPrimaryButton,
-    StyledGreyButton,
     StyledDivider,
     ForgotPasswordText,
     StyledLink,
-    StyledCircularProgress
 } from './styles';
 
 import { LoginFormViewModel } from './LoginFormViewModel';
@@ -20,7 +17,12 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Redirect } from 'react-router-dom';
 import history from "../../../../history";
-import { StyledTextField } from '../../../global/globalStyles';
+import {
+    StyledTextField,
+    StyledPrimaryButton,
+    StyledCircularProgress,
+    StyledGreyButton
+} from '../../../global/globalStyles';
 import { isAuthenticated } from '../../../utils/AuthUtil';
 
 @observer

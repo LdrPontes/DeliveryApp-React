@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
-import { CircularProgress } from '@material-ui/core';
 
 export const Container = styled.div`
     margin: auto;
@@ -28,43 +26,6 @@ export const StyledSmall = styled.small`
     color: #9e9e9e;
 `;
 
-export const StyledPrimaryButton = styled(Button)`
-    width: 100%;
-    height: 50px;
-    margin-top: 32px;
-    background-color: #880e4f;
-    border-radius: 30px;
-    &:hover {
-        background-color: #560027;
-    }
-
-    & .MuiTouchRipple-child {
-        background-color: white;
-    }
-
-    & .MuiButton-label {
-        color: #fff;
-    }
-`;
-
-export const StyledGreyButton = styled(Button)`
-    width: 100%;
-    height: 50px;
-    margin-top: 32px;
-    background-color: #e0e0e0;
-    border-radius: 30px;
-    &:hover {
-        background-color: #aeaeae;
-    }
-
-    & .MuiTouchRipple-child {
-        background-color: white;
-    }
-
-    & .MuiButton-label {
-        color: #fff;
-    }
-`;
 
 export const StyledDivider = styled(Divider)`
     width: 25%;
@@ -89,8 +50,4 @@ export const StyledLink = styled(Link)`
         text-decoration: none;
         color: #9e9e9e
     }
-`;
-
-export const StyledCircularProgress = styled(CircularProgress)`
-    color: #fff
 `;

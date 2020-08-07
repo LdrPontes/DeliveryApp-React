@@ -3,9 +3,8 @@ import { EnterpriseRegisterFormViewModel } from "./EnterpriseRegisterFormViewMod
 import { RadioGroup, FormControlLabel, FormControl, InputLabel, MenuItem, Select, Box } from "@material-ui/core";
 import { StyledRadio, Container, LeftContainer, Title, RowContainer, NumberInput } from "./styles";
 import { observer } from "mobx-react";
-import { StyledTextField, StyledFormControl } from "../../../global/globalStyles";
+import { StyledTextField, StyledFormControl, StyledPrimaryButton, StyledCircularProgress } from "../../../global/globalStyles";
 import InputMask from 'react-input-mask';
-import { StyledPrimaryButton, StyledCircularProgress } from "../../login/loginForm/styles";
 import AvatarInput from "../../../components/AvatarInput/AvatarInput";
 import history from "../../../../history";
 
@@ -37,7 +36,7 @@ class EnterpriseRegisterForm extends Component {
     }
 
     render(): JSX.Element {
-        if(this.model.isSuccess){
+        if (this.model.isSuccess) {
             history.push('/')
             return (<></>)
         }

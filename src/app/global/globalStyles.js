@@ -1,6 +1,8 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Button from '@material-ui/core/Button'
 
 export default createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -20,9 +22,31 @@ export default createGlobalStyle`
         cursor: pointer;
     }
 
-    h1 {
+    h1, small, h3 {
         font-family: 'Roboto', sans-serif;
     }
+`;
+export const StyledGreyButton = styled(Button)`
+    width: 100%;
+    height: 50px;
+    margin-top: 32px;
+    background-color: #e0e0e0;
+    border-radius: 30px;
+    &:hover {
+        background-color: #aeaeae;
+    }
+
+    & .MuiTouchRipple-child {
+        background-color: white;
+    }
+
+    & .MuiButton-label {
+        color: #fff;
+    }
+`;
+
+export const StyledCircularProgress = styled(CircularProgress)`
+    color: #fff
 `;
 
 export const StyledTextField = styled(TextField)`
@@ -41,6 +65,25 @@ export const StyledTextField = styled(TextField)`
         }
     }
 `;
+export const StyledPrimaryButton = styled(Button)`
+    width: 100%;
+    height: 50px;
+    margin-top: 32px;
+    background-color: #880e4f;
+    border-radius: 30px;
+    &:hover {
+        background-color: #560027;
+    }
+
+    & .MuiTouchRipple-child {
+        background-color: white;
+    }
+
+    & .MuiButton-label {
+        color: #fff;
+    }
+`;
+
 
 export const StyledFormControl = styled(FormControl)`
     margin-top: 16px;

@@ -1,8 +1,6 @@
 import { Component } from "react";
 import React from "react";
-import { Container, StyledFab } from "./styles";
-
-import AddIcon from '@material-ui/icons/Add';
+import { Container } from "./styles";
 
 class OptionalFragment extends Component {
     state = {}
