@@ -22,7 +22,7 @@ export default createGlobalStyle`
         cursor: pointer;
     }
 
-    h1, small, h3 {
+    h1, h2, small, h3 {
         font-family: 'Roboto', sans-serif;
     }
 `;

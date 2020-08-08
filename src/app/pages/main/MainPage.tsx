@@ -26,7 +26,6 @@ class MainPage extends Component {
     }
 
     render(): JSX.Element {
-        console.log(isAuthenticated())
         if (isAuthenticated())
             return this.body()
         else

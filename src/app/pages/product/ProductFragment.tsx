@@ -1,12 +1,14 @@
 import { Component } from "react";
 import React from "react";
-import { Container, StyledTextField, StyledPrimaryButton, StyledFab } from "./styles";
+import { Container, StyledTextField, StyledFab, ContainerProductSection, StyledFabSection, Section, ContainerSectionIcon, ContainerTitle } from "./styles";
 import { ProductFragmentViewModel } from "./ProductFragmentViewModel";
-import { InputAdornment, IconButton } from "@material-ui/core";
+import { InputAdornment, IconButton, Fab } from "@material-ui/core";
 import { Search, Add } from "@material-ui/icons";
 import EmptyContent from "../../components/Empty/EmptyContent";
 import { observer } from "mobx-react";
 import ProductSectionForm from "./productSectionForm/ProductSectionForm";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 @observer
 class ProductFragment extends Component {
@@ -31,6 +33,10 @@ class ProductFragment extends Component {
         this.model.newCategoryName = event.target.value
     }
 
+    handleChangeSearch(): void {
+        this.model.readProductSection()
+    }
+
     componentDidMount(): void {
         this.model.readProductSection()
     }
@@ -47,7 +53,8 @@ class ProductFragment extends Component {
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton
-                                aria-label="search">
+                                aria-label="search"
+                                onClick={() => this.handleChangeSearch()}>
                                 <Search />
                             </IconButton>
                         </InputAdornment>
@@ -55,18 +62,30 @@ class ProductFragment extends Component {
                 }}
             />
             {this.model.sections.length > 0 ?
-                <>
+                <ContainerProductSection>
                     {this.model.sections.map(section => {
                         return (
-                            <div key={section.id}>
-                                <h1>{section.name}</h1>
-                            </div>
+                            <Section key={section.id}>
+                                <ContainerTitle>
+                                    <h2>{section.name}</h2>
+                                    <ContainerSectionIcon>
+                                        <IconButton color="inherit">
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton color="inherit">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ContainerSectionIcon>
+                                </ContainerTitle>
+                                {section.products.length == 0 ? <small>Essa categoria ainda nāo possui produtos.</small> : <div></div>}
+                                <StyledFabSection onClick={() => this.handleNewCategoryClick()} ><Add /></StyledFabSection>
+                            </Section>
                         )
                     })}
-                </>
+                </ContainerProductSection>
                 : <EmptyContent title="Sem dados" description="Você ainda nāo possui categorias e produtos cadastrados" ></EmptyContent>}
 
-            <StyledFab onClick={() => this.handleNewCategoryClick()} aria-label={''} variant="extended" classes={{root: 'fab'}}><Add />Nova categoria</StyledFab>
+            <StyledFab onClick={() => this.handleNewCategoryClick()} aria-label={''} variant="extended" classes={{ root: 'fab' }}><Add />Nova categoria</StyledFab>
             <ProductSectionForm error={this.model.errorProductSectionName} value={this.model.newCategoryName} handleNameChange={(e) => this.handleFormCategoryNameChange(e)} loading={this.model.isFormProductSectionLoading} open={this.model.dialogCategoryOpen} handleClose={(e) => this.handleCloseNewCategoryClick()} handleSave={(e) => this.handleSaveNewCategoryClick()}></ProductSectionForm>
         </Container>);
     }

@@ -2,8 +2,9 @@ import React, { ChangeEventHandler } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@material-ui/core";
 import { StyledTextField } from "../../../global/globalStyles";
 import { StyledDialogButton, StyledCircularProgress } from "./styles";
+import { ProductSection } from "../../../../domain/entities/ProductSection";
 
-type ProductSectionFormProps = {
+interface ProductSectionFormProps {
     open: boolean,
     handleClose: ChangeEventHandler,
     handleSave: ChangeEventHandler,
@@ -11,6 +12,7 @@ type ProductSectionFormProps = {
     loading: boolean,
     value: string,
     error: string,
+    section?: ProductSection,
 }
 
 export default function ProductSectionForm(props: ProductSectionFormProps): JSX.Element {

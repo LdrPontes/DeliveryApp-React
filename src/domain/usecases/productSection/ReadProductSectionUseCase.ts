@@ -8,7 +8,7 @@ export class ReadProductSectionUseCase extends UseCase<ReadProductSectionRespons
     repository: IProductSectionRepository = new ProductSectionRepository()
 
     async buildUseCase(params: ReadProductSectionParams): Promise<ReadProductSectionResponse> {
-        const result =  await this.repository.read(params.enterprise_id)
+        const result =  await this.repository.read(params.enterprise_id, params.search)
 
         return new ReadProductSectionResponse(result)
     }
@@ -25,9 +25,11 @@ export class ReadProductSectionResponse {
 
 export class ReadProductSectionParams {
     enterprise_id: number
+    search: string
 
-    constructor(enterprise_id: number) {
+    constructor(enterprise_id: number, search: string) {
         this.enterprise_id = enterprise_id
+        this.search = search
     }
 }
 

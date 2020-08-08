@@ -17,10 +17,14 @@ export class ProductSectionRepository implements IProductSectionRepository {
         }
     }
 
-    async read(enterprise_id: number): Promise<ProductSection[]> {
+    async read(enterprise_id: number, search: string): Promise<ProductSection[]> {
         try {
 
-            const response: ProductSection[] = (await api.get(`/section/product/read/${enterprise_id}`)).data
+            let params = ''
+            if(search !== ''){
+                params = `?search=${search}`
+            }
+            const response: ProductSection[] = (await api.get(`/section/product/read/${enterprise_id}${params}`)).data
 
             return response
 

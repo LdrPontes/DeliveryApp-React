@@ -66,7 +66,7 @@ export class ProductFragmentViewModel {
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            this.sections = (await this.readProductSectionUseCase.execute(new ReadProductSectionParams(user!.id))).sections
+            this.sections = (await this.readProductSectionUseCase.execute(new ReadProductSectionParams(user!.id, this.search))).sections
 
         } catch (error) {
             if (error instanceof AppError) {
