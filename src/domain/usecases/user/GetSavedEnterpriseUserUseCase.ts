@@ -1,7 +1,7 @@
 import { EnterpriseUser } from "../../entities/EnterpriseUser";
 import { UseCase } from "../../utils/UseCase";
-import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/auth/IAuthEnterpriseRepositoryLocal";
-import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/auth/AuthEnterpriseRepositoryLocal";
+import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/IAuthEnterpriseRepositoryLocal";
+import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/AuthEnterpriseRepositoryLocal";
 
 export class GetSavedEnterpriseUserUseCase extends UseCase<GetSavedEnterpriseUserResponse, void>{
 
