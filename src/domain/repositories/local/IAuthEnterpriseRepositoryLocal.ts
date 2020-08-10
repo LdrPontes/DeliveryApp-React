@@ -1,4 +1,4 @@
-import { EnterpriseUser } from "../../../entities/EnterpriseUser";
+import { EnterpriseUser } from "../../entities/EnterpriseUser";
 
 export interface IAuthEnterpriseRepositoryLocal{
 

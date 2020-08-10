@@ -1,9 +1,9 @@
 import { UseCase } from "../../utils/UseCase";
 import { Enterprise } from "../../entities/Enterprise";
-import { IEnterpriseRepository } from "../../repositories/remote/enterprise/IEnterpriseRepository";
-import { EnterpriseRepository } from "../../../data/repositories/remote/enterprise/EnterpriseRepository";
-import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/auth/IAuthEnterpriseRepositoryLocal";
-import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/auth/AuthEnterpriseRepositoryLocal";
+import { IEnterpriseRepository } from "../../repositories/remote/IEnterpriseRepository";
+import { EnterpriseRepository } from "../../../data/repositories/remote/EnterpriseRepository";
+import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/IAuthEnterpriseRepositoryLocal";
+import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/AuthEnterpriseRepositoryLocal";
 
 export class SaveEnterpriseUseCase extends UseCase<SaveEnterpriseResponse, SaveEnterpriseParams> {
 

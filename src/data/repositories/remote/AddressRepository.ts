@@ -1,6 +1,6 @@
-import { IAddressRepository } from "../../../../domain/repositories/remote/address/IAddressRepository";
-import { Address } from "../../../../domain/entities/Address";
-import { instance } from "../../utils/RemoteConnection";
+import { IAddressRepository } from "../../../domain/repositories/remote/IAddressRepository";
+import { Address } from "../../../domain/entities/Address";
+import { instance } from "../utils/RemoteConnection";
 
 export class AddressRepository implements IAddressRepository {
     async getAddress(cep: string): Promise<Address> {

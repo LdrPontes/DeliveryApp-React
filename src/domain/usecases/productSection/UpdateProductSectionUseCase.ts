@@ -3,19 +3,19 @@ import { ProductSection } from "../../entities/ProductSection";
 import { IProductSectionRepository } from "../../repositories/remote/IProductSectionRepository";
 import { ProductSectionRepository } from "../../../data/repositories/remote/ProductSectionRepository";
 
-export class SaveProductSectionUseCase extends UseCase<SaveProductSectionResponse, SaveProductSectionParams> {
+export class UpdateProductSectionUseCase extends UseCase<UpdateProductSectionResponse, UpdateProductSectionParams> {
     
     repository: IProductSectionRepository = new ProductSectionRepository()
 
-    async buildUseCase(params: SaveProductSectionParams): Promise<SaveProductSectionResponse> {
-        const result =  await this.repository.save(params.name, params.enterprise_id)
+    async buildUseCase(params: UpdateProductSectionParams): Promise<UpdateProductSectionResponse> {
+        const result =  await this.repository.update(params.id, params.name)
 
-        return new SaveProductSectionResponse(result)
+        return new UpdateProductSectionResponse(result)
     }
 
 }
 
-export class SaveProductSectionResponse {
+export class UpdateProductSectionResponse {
     section: ProductSection
 
     constructor(section: ProductSection) {
@@ -23,13 +23,13 @@ export class SaveProductSectionResponse {
     }
 }
 
-export class SaveProductSectionParams {
+export class UpdateProductSectionParams {
     name: string
-    enterprise_id: number
+    id: number
 
-    constructor(name: string, enterprise_id: number) {
+    constructor( id: number, name: string) {
         this.name = name
-        this.enterprise_id = enterprise_id
+        this.id = id
     }
 }
 

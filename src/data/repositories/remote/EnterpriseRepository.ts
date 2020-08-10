@@ -1,7 +1,7 @@
-import { IEnterpriseRepository } from "../../../../domain/repositories/remote/enterprise/IEnterpriseRepository";
-import api from "../../utils/RemoteConnection";
-import { Enterprise } from "../../../../domain/entities/Enterprise";
-import { AppError } from "../../../../domain/utils/AppError";
+import { IEnterpriseRepository } from "../../../domain/repositories/remote/IEnterpriseRepository";
+import api from "../utils/RemoteConnection";
+import { Enterprise } from "../../../domain/entities/Enterprise";
+import { AppError } from "../../../domain/utils/AppError";
 
 export class EnterpriseRepository implements IEnterpriseRepository {
 

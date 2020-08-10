@@ -1,7 +1,7 @@
 import { UseCase } from "../../utils/UseCase";
 import { ProductSection } from "../../entities/ProductSection";
-import { IProductSectionRepository } from "../../repositories/remote/productSection/IProductSectionRepository";
-import { ProductSectionRepository } from "../../../data/repositories/remote/productSection/ProductSectionRepository";
+import { IProductSectionRepository } from "../../repositories/remote/IProductSectionRepository";
+import { ProductSectionRepository } from "../../../data/repositories/remote/ProductSectionRepository";
 
 export class ReadProductSectionUseCase extends UseCase<ReadProductSectionResponse, ReadProductSectionParams> {
     

@@ -1,7 +1,7 @@
 import { UseCase } from "../../utils/UseCase";
 import { Address } from "../../entities/Address";
-import { IAddressRepository } from "../../repositories/remote/address/IAddressRepository";
-import { AddressRepository } from "../../../data/repositories/remote/address/AddressRepository";
+import { IAddressRepository } from "../../repositories/remote/IAddressRepository";
+import { AddressRepository } from "../../../data/repositories/remote/AddressRepository";
 
 export class GetAddressUseCase extends UseCase<GetAddressResponse, GetAddressParams>{
     

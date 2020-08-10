@@ -1,7 +1,7 @@
-import { ICategoryRepository } from "../../../../domain/repositories/remote/category/ICategoryRepository";
-import { Category } from "../../../../domain/entities/Category";
-import api from "../../utils/RemoteConnection";
-import { AppError } from "../../../../domain/utils/AppError";
+import { ICategoryRepository } from "../../../domain/repositories/remote/ICategoryRepository";
+import { Category } from "../../../domain/entities/Category";
+import api from "../utils/RemoteConnection";
+import { AppError } from "../../../domain/utils/AppError";
 
 export class CategoryRepository implements ICategoryRepository {
 

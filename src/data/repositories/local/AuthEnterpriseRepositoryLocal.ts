@@ -1,5 +1,5 @@
-import { IAuthEnterpriseRepositoryLocal } from "../../../../domain/repositories/local/auth/IAuthEnterpriseRepositoryLocal";
-import { EnterpriseUser } from "../../../../domain/entities/EnterpriseUser";
+import { IAuthEnterpriseRepositoryLocal } from "../../../domain/repositories/local/IAuthEnterpriseRepositoryLocal";
+import { EnterpriseUser } from "../../../domain/entities/EnterpriseUser";
 
 
 export class AuthEnterpriseRepositoryLocal implements IAuthEnterpriseRepositoryLocal {

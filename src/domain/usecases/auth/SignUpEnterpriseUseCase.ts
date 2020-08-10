@@ -1,8 +1,8 @@
 import { UseCase } from "../../utils/UseCase";
-import { IAuthEnterpriseRepository } from "../../repositories/remote/auth/IAuthEnterpriseRepository";
-import { AuthEnterpriseRepository } from "../../../data/repositories/remote/auth/AuthEnterpriseRespository";
-import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/auth/IAuthEnterpriseRepositoryLocal";
-import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/auth/AuthEnterpriseRepositoryLocal";
+import { IAuthEnterpriseRepository } from "../../repositories/remote/IAuthEnterpriseRepository";
+import { AuthEnterpriseRepository } from "../../../data/repositories/remote/AuthEnterpriseRespository";
+import { IAuthEnterpriseRepositoryLocal } from "../../repositories/local/IAuthEnterpriseRepositoryLocal";
+import { AuthEnterpriseRepositoryLocal } from "../../../data/repositories/local/AuthEnterpriseRepositoryLocal";
 import { EnterpriseUser } from "../../entities/EnterpriseUser";
 
 export class SignUpEnterpriseUseCase extends UseCase<SignUpEnterpriseResponse, SignUpEnterpriseParams>{

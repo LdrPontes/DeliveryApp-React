@@ -1,7 +1,7 @@
 import { Category } from "../../entities/Category"
 import { UseCase } from "../../utils/UseCase"
-import { ICategoryRepository } from "../../repositories/remote/category/ICategoryRepository"
-import { CategoryRepository } from "../../../data/repositories/remote/category/CategoryRepository"
+import { ICategoryRepository } from "../../repositories/remote/ICategoryRepository"
+import { CategoryRepository } from "../../../data/repositories/remote/CategoryRepository"
 
 export class ReadAllCategoryUseCase extends UseCase<ReadAllCategoryResponse, void> {
 

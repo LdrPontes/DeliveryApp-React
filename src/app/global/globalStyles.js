@@ -48,7 +48,9 @@ export const StyledGreyButton = styled(Button)`
 export const StyledCircularProgress = styled(CircularProgress)`
     color: #fff
 `;
-
+export const StyledCircularProgressPrimary = styled(CircularProgress)`
+    color: #880e4f
+`;
 export const StyledTextField = styled(TextField)`
     margin-top: 16px;
     width: 100%;

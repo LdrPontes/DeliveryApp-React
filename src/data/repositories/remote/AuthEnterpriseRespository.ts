@@ -1,7 +1,7 @@
-import { IAuthEnterpriseRepository } from "../../../../domain/repositories/remote/auth/IAuthEnterpriseRepository";
-import { EnterpriseUser } from "../../../../domain/entities/EnterpriseUser";
-import api from '../../utils/RemoteConnection'
-import { AppError } from "../../../../domain/utils/AppError";
+import { IAuthEnterpriseRepository } from "../../../domain/repositories/remote/IAuthEnterpriseRepository";
+import { EnterpriseUser } from "../../../domain/entities/EnterpriseUser";
+import api from '../utils/RemoteConnection'
+import { AppError } from "../../../domain/utils/AppError";
 
 export class AuthEnterpriseRepository implements IAuthEnterpriseRepository {
 
