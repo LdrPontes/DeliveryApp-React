@@ -1,5 +1,5 @@
 import React, {ChangeEventHandler } from 'react'
-import { StyledAvatar } from './styles';
+import { StyledAvatar, Container } from './styles';
 
 
 type AvatarProps = {
@@ -10,7 +10,7 @@ type AvatarProps = {
 export default function AvatarInput(props: AvatarProps): JSX.Element {
 
     return (
-        <div>
+        <Container>
             <label htmlFor="avatar">
                 <StyledAvatar src={props.preview} />
                 <input
@@ -20,6 +20,6 @@ export default function AvatarInput(props: AvatarProps): JSX.Element {
                     accept="image/*"
                     onChange={props.handlerImageChange} />
             </label>
-        </div>
+        </Container>
     )
 }

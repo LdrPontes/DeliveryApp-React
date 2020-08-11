@@ -1,7 +1,6 @@
 import React, { ChangeEventHandler } from "react";
 import { Dialog, DialogContent, DialogContentText, DialogActions } from "@material-ui/core";
 import { StyledDialogButton, StyledCircularProgress, Title } from "./styles";
-import { ProductSection } from "../../../../domain/entities/ProductSection";
 import { StyledTextField } from "../../../global/globalStyles";
 
 interface ProductSectionFormProps {
@@ -12,8 +11,7 @@ interface ProductSectionFormProps {
     loading: boolean,
     value: string,
     error: string,
-    section?: ProductSection,
-    isEdit: boolean
+    edit: boolean
 }
 
 export default function ProductSectionForm(props: ProductSectionFormProps): JSX.Element {
@@ -29,7 +27,7 @@ export default function ProductSectionForm(props: ProductSectionFormProps): JSX.
     return (
         <div>
             <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
-                <Title>{props.isEdit ? 'Editar categoria' : 'Nova categoria'}</Title>
+                <Title>{props.edit ? 'Editar categoria' : 'Nova categoria'}</Title>
                 <DialogContent>
                     <DialogContentText>
                         Informe o nome que deseja para sua nova categoria de produtos.

@@ -1,3 +1,5 @@
+import { OptionalSection } from "./OptionalSection"
+
 export class Product {
     id: number
     title: string
@@ -6,6 +8,7 @@ export class Product {
     price: number
     enterprise_id: number
     product_section_id: number
+    optional_sections: OptionalSection[]
 
 
     constructor(id: number,
@@ -14,7 +17,8 @@ export class Product {
         img_url: string,
         price: number,
         enterprise_id: number,
-        product_section_id: number) {
+        product_section_id: number,
+        optional_sections: OptionalSection[]) {
         this.id = id
         this.title = title
         this.description = description
@@ -22,6 +26,7 @@ export class Product {
         this.price = price
         this.enterprise_id = enterprise_id
         this.product_section_id = product_section_id
+        this.optional_sections = optional_sections
 
     }
 }

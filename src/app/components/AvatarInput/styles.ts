@@ -6,3 +6,8 @@ export const StyledAvatar = styled(Avatar)`
     height: 75px;
     cursor: pointer;
 `;
+
+export const Container = styled.div`
+    width: 75px;
+    height: 75px;
+`;

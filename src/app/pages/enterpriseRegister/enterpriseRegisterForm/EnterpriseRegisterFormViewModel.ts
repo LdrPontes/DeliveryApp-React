@@ -145,15 +145,15 @@ export class EnterpriseRegisterFormViewModel {
     @action
     async saveEnterprise(): Promise<void> {
         this.setDefaultValues()
-
-        this.isLoading = true
         
         try {
 
             if (this.hasFieldErrors()) {
-                this.isLoading = false
                 return
             }
+
+            this.isLoading = true
+
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
             await this.saveEnterpriseUseCase.execute(new SaveEnterpriseParams(this.category, user!.id, this.name, this.typeDocument, this.document, this.imgBase64!, this.imgType!, this.address))

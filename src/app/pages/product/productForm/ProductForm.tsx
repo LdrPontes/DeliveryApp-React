@@ -1,12 +1,16 @@
 import React, { ChangeEventHandler } from 'react';
-import { Dialog, DialogContent, DialogActions, Select, InputLabel, createMuiTheme, MuiThemeProvider, MenuItem, Checkbox, ListItemText, InputAdornment } from '@material-ui/core';
-import { StyledTextField, StyledCircularProgress, StyledFormControl } from '../../../global/globalStyles';
+import { Dialog, DialogContent, DialogActions, Select, InputLabel, createMuiTheme, MuiThemeProvider, MenuItem, Checkbox, ListItemText } from '@material-ui/core';
+import { StyledTextField, StyledFormControl, StyledCircularProgressPrimary } from '../../../global/globalStyles';
 import { StyledDialogButton } from '../productSectionForm/styles';
 import { Title, RowContainer, NumberInput } from './styles';
 import { ProductSection } from '../../../../domain/entities/ProductSection';
+import CurrencyInput from '../../../components/CurrencyInput/CurrencyInput';
+import { OptionalSection } from '../../../../domain/entities/OptionalSection';
+import AvatarInput from '../../../components/AvatarInput/AvatarInput';
 
 type ProductFormProps = {
     open: boolean,
+    edit: boolean,
     handleClose: ChangeEventHandler,
     handleSave: ChangeEventHandler,
     handleTitleChange: ChangeEventHandler,
@@ -15,13 +19,19 @@ type ProductFormProps = {
     handlePriceChange: ChangeEventHandler,
     handleOptionalChange: ChangeEventHandler,
     handleProductSectionChange: ChangeEventHandler,
+    image: string,
     title: string,
     description: string,
     price: string,
-    optionals: string[],
-    selectedOptionals: string[],
+    optionals: OptionalSection[],
+    selectedOptionals: number[],
+    selectedProductSection: number,
     productSections: ProductSection[],
-    loading: boolean
+    loading: boolean,
+    errorTitle?: string,
+    errorDescription?: string,
+    errorProductSection?: string,
+    errorPrice?: string,
 }
 
 
@@ -49,14 +59,35 @@ export default function ProductForm(props: ProductFormProps): JSX.Element {
         props.handlePriceChange(event)
     }
 
+    function handleProductSectionChange(event: any): void {
+        props.handleProductSectionChange(event)
+    }
 
+    function handleAvatarChange(event: any): void {
+        props.handleAvatarChange(event)
+    }
 
+    function renderValueOptionalsSelected(ids: number[]): string[] {
+        const result: string[] = []
+        for (const i of ids) {
+            for (const j of props.optionals) {
+                if (i === j.id) {
+                    result.push(j.name)
+                }
+            }
+        }
+
+        return result
+    }
 
     return (<div>
         <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
             <Title>Novo produto</Title>
             <DialogContent>
+                <AvatarInput preview={props.image} handlerImageChange={handleAvatarChange}></AvatarInput>
                 <StyledTextField
+                    error={props.errorTitle !== undefined && props.errorTitle !== ''}
+                    helperText={props.errorTitle}
                     autoFocus
                     variant="filled"
                     id="name"
@@ -68,6 +99,8 @@ export default function ProductForm(props: ProductFormProps): JSX.Element {
                     onChange={props.handleTitleChange}
                 />
                 <StyledTextField
+                    error={props.errorDescription !== undefined && props.errorDescription !== ''}
+                    helperText={props.errorDescription}
                     variant="filled"
                     id="name"
                     label="Descrição"
@@ -80,11 +113,16 @@ export default function ProductForm(props: ProductFormProps): JSX.Element {
                     onChange={props.handleDescriptionChange}
                 />
                 <MuiThemeProvider theme={theme}>
-                    <StyledFormControl variant="filled" >
+                    <StyledFormControl variant="filled"
+                        error={props.errorProductSection !== undefined && props.errorProductSection !== ''}>
                         <InputLabel>Categoria</InputLabel>
                         <Select
                             label="Categoria"
-                            value={''}>
+                            value={props.selectedProductSection || ''}
+                            onChange={handleProductSectionChange}>
+                            {props.productSections.map(section => {
+                                return (<MenuItem key={section.id} value={section.id}>{section.name}</MenuItem>);
+                            })}
                         </Select>
                     </StyledFormControl>
                 </MuiThemeProvider>
@@ -96,23 +134,23 @@ export default function ProductForm(props: ProductFormProps): JSX.Element {
                             label="Opcionais"
                             value={props.selectedOptionals}
                             onChange={handleChangeOptional}
-                            renderValue={(selected) => (selected as string[]).join(', ')}>
-                            {props.optionals.map((name: string) => (
-                                <MenuItem key={name} value={name}>
-                                    <Checkbox checked={props.selectedOptionals.indexOf(name) > -1} />
-                                    <ListItemText primary={name} />
+                            renderValue={(selected) => (renderValueOptionalsSelected(selected as number[])).join(', ')}>
+                            {props.optionals.map((optionalSection: OptionalSection) => (
+                                <MenuItem key={optionalSection.id} value={optionalSection.id}>
+                                    <Checkbox checked={props.selectedOptionals.findIndex(i => i === optionalSection.id) > -1} />
+                                    <ListItemText primary={optionalSection.name} />
                                 </MenuItem>
                             ))}
                         </Select>
                     </StyledFormControl>
                     <NumberInput
+                        error={props.errorPrice !== undefined && props.errorPrice !== ''}
+                        helperText={props.errorPrice}
                         label="Preço"
                         variant="filled"
-                        type="number"
                         onChange={(e) => handlePriceChange(e)}
                         value={props.price}
-                        InputProps={{ inputProps: { min: 0 }, startAdornment: <InputAdornment position="start">R$</InputAdornment>, }}
-
+                        InputProps={{ inputComponent: CurrencyInput as any }}
                     />
                 </RowContainer>
             </DialogContent>
@@ -121,7 +159,7 @@ export default function ProductForm(props: ProductFormProps): JSX.Element {
                     Cancelar
                 </StyledDialogButton>
                 <StyledDialogButton disabled={props.loading} onClick={handleSaveClick} color="primary">
-                    {props.loading ? <StyledCircularProgress /> : <>Salvar</>}
+                    {props.loading ? <StyledCircularProgressPrimary /> : <>Salvar</>}
                 </StyledDialogButton>
             </DialogActions>
         </Dialog>
