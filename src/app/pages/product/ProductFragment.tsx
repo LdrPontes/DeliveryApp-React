@@ -10,6 +10,7 @@ import ProductSectionForm from "./productSectionForm/ProductSectionForm";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Alert } from '@material-ui/lab';
+import ProductForm from "./productForm/ProductForm";
 
 @observer
 class ProductFragment extends Component {
@@ -17,37 +18,74 @@ class ProductFragment extends Component {
 
     state = {}
 
+    handleNewProductClick(sectionId: number): void {
+        this.model.dialogProductFormOpen = true
+        this.model.openedProductSectionId = sectionId
+    }
+
+    handleSaveProductClick(): void {
+        this.model.dialogProductFormOpen = false
+    }
+
+    handleCloseNewProductClick(): void {
+        this.model.dialogProductFormOpen = false
+        this.model.isProductFormOpenedForEdit = false
+        this.model.productTitle = ''
+        this.model.productDescription = ''
+        this.model.productPrice = ''
+        this.model.productImg = ''
+    }
+
+    handleProductTitleChange(event: any): void {
+        this.model.productTitle = event.target.value
+    }
+
+    handleProductDescriptionChange(event: any): void {
+        this.model.productDescription = event.target.value
+    }
+    handlePriceChange(event: any): void {
+       
+        const valor = event.target.value;
+        console.log(valor)
+        this.model.productPrice = valor.toLocaleString('pt-BR', { minimumFractionDigits: 2});
+    }
+
+    handleChangeMultiple = (event: any) => {
+        console.log('Chamou')
+        this.model.selectedOptionals = event.target.value as string[]
+    };
+
     handleNewCategoryClick(): void {
-        this.model.isCategoryOpenForEdit = false
-        this.model.dialogCategoryOpen = true
+        this.model.isProductSectionFormOpenedForEdit = false
+        this.model.dialogProductSectionFormOpen = true
 
     }
 
     handleEditCategoryClick(editCategoryId: number, oldName: string): void {
-        this.model.newCategoryName = oldName
-        this.model.editCategoryId = editCategoryId
-        this.model.isCategoryOpenForEdit = true
-        this.model.dialogCategoryOpen = true
+        this.model.productSectionName = oldName
+        this.model.editProductSectionId = editCategoryId
+        this.model.isProductSectionFormOpenedForEdit = true
+        this.model.dialogProductSectionFormOpen = true
     }
 
     handleCloseNewCategoryClick(): void {
-        this.model.dialogCategoryOpen = false
-        this.model.isCategoryOpenForEdit = false
-        this.model.newCategoryName = ''
+        this.model.dialogProductSectionFormOpen = false
+        this.model.isProductSectionFormOpenedForEdit = false
+        this.model.productSectionName = ''
     }
 
     async handleSaveNewCategoryClick(): Promise<void> {
-        if(this.model.isCategoryOpenForEdit) {
+        if (this.model.isProductSectionFormOpenedForEdit) {
             await this.model.updateProductSection()
         } else {
             await this.model.saveProductSection()
         }
-        
+
         this.model.readProductSection()
     }
 
     handleFormCategoryNameChange(event: any): void {
-        this.model.newCategoryName = event.target.value
+        this.model.productSectionName = event.target.value
     }
 
     handleChangeSearch(): void {
@@ -70,7 +108,11 @@ class ProductFragment extends Component {
                 variant="outlined"
                 type="text"
                 value={this.model.search}
-                onChange={(e) => this.model.search = e.target.value}
+                onChange={(e) => {
+                    this.model.search = e.target.value
+                    this.handleChangeSearch()
+                }
+                }
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -100,7 +142,7 @@ class ProductFragment extends Component {
                                     </ContainerSectionIcon>
                                 </ContainerTitle>
                                 {section.products.length === 0 ? <small>Essa categoria ainda nāo possui produtos.</small> : <div></div>}
-                                <StyledFabSection onClick={() => this.handleNewCategoryClick()} ><Add /></StyledFabSection>
+                                <StyledFabSection onClick={() => this.handleNewProductClick(section.id)} ><Add /></StyledFabSection>
                             </Section>
                         )
                     })}
@@ -108,7 +150,33 @@ class ProductFragment extends Component {
                 : <EmptyContent title="Sem dados" description="Você ainda nāo possui categorias e produtos cadastrados" ></EmptyContent>}
 
             <StyledFab onClick={() => this.handleNewCategoryClick()} aria-label={''} variant="extended" classes={{ root: 'fab' }}><Add />Nova categoria</StyledFab>
-            <ProductSectionForm error={this.model.errorProductSectionName} value={this.model.newCategoryName} handleNameChange={(e) => this.handleFormCategoryNameChange(e)} loading={this.model.isFormProductSectionLoading} open={this.model.dialogCategoryOpen} handleClose={(e) => this.handleCloseNewCategoryClick()} handleSave={(e) => this.handleSaveNewCategoryClick()}></ProductSectionForm>
+
+            <ProductForm open={this.model.dialogProductFormOpen}
+                optionals={this.model.optionals}
+                selectedOptionals={this.model.selectedOptionals}
+                productSections={this.model.sections}
+                loading={this.model.isProductFormLoading}
+                title={this.model.productTitle}
+                price={this.model.productPrice}
+                description={this.model.productDescription}
+                handleClose={(e) => this.handleCloseNewProductClick()}
+                handleSave={(e) => this.handleSaveProductClick()}
+                handleAvatarChange={(e) => { console.log('Change') }}
+                handleTitleChange={(e) => this.handleProductTitleChange(e)}
+                handlePriceChange={(e) => this.handlePriceChange(e)}
+                handleOptionalChange={(e) => this.handleChangeMultiple(e)}
+                handleProductSectionChange={(e) => { console.log('Change') }}
+                handleDescriptionChange={(e) => this.handleProductDescriptionChange(e)} />
+
+            <ProductSectionForm
+                isEdit={this.model.isProductSectionFormOpenedForEdit}
+                error={this.model.errorProductSectionName}
+                value={this.model.productSectionName}
+                handleNameChange={(e) => this.handleFormCategoryNameChange(e)}
+                loading={this.model.isProductSectionFormLoading}
+                open={this.model.dialogProductSectionFormOpen}
+                handleClose={(e) => this.handleCloseNewCategoryClick()}
+                handleSave={(e) => this.handleSaveNewCategoryClick()} />
         </Container>);
     }
 }

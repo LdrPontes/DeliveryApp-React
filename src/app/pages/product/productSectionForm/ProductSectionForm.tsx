@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@material-ui/core";
-import { StyledTextField } from "../../../global/globalStyles";
-import { StyledDialogButton, StyledCircularProgress } from "./styles";
+import { Dialog, DialogContent, DialogContentText, DialogActions } from "@material-ui/core";
+import { StyledDialogButton, StyledCircularProgress, Title } from "./styles";
 import { ProductSection } from "../../../../domain/entities/ProductSection";
+import { StyledTextField } from "../../../global/globalStyles";
 
 interface ProductSectionFormProps {
     open: boolean,
@@ -13,6 +13,7 @@ interface ProductSectionFormProps {
     value: string,
     error: string,
     section?: ProductSection,
+    isEdit: boolean
 }
 
 export default function ProductSectionForm(props: ProductSectionFormProps): JSX.Element {
@@ -28,7 +29,7 @@ export default function ProductSectionForm(props: ProductSectionFormProps): JSX.
     return (
         <div>
             <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Nova categoria</DialogTitle>
+                <Title>{props.isEdit ? 'Editar categoria' : 'Nova categoria'}</Title>
                 <DialogContent>
                     <DialogContentText>
                         Informe o nome que deseja para sua nova categoria de produtos.
@@ -37,12 +38,13 @@ export default function ProductSectionForm(props: ProductSectionFormProps): JSX.
                         error={props.error !== ''}
                         helperText={props.error}
                         autoFocus
-                        variant="outlined"
+                        variant="filled"
                         id="name"
                         label="Nome"
                         type="text"
                         fullWidth
                         value={props.value}
+                        InputProps={{classes: {underline: 'underline'}, disableUnderline: false }}
                         onChange={props.handleNameChange}
                     />
                 </DialogContent>

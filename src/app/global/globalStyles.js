@@ -46,11 +46,12 @@ export const StyledGreyButton = styled(Button)`
 `;
 
 export const StyledCircularProgress = styled(CircularProgress)`
-    color: #fff
+    color: #fff;
 `;
 export const StyledCircularProgressPrimary = styled(CircularProgress)`
-    color: #880e4f
+    color: #880e4f;
 `;
+
 export const StyledTextField = styled(TextField)`
     margin-top: 16px;
     width: 100%;
@@ -58,7 +59,19 @@ export const StyledTextField = styled(TextField)`
     label.Mui-focused {
         color: #880e4f;
     }
-    .MuiOutlinedInput-root {
+    .underline:before {
+            border-bottom: 1px solid #7a7a7a;
+        }
+       
+    .underline:hover:before {
+        border-bottom: 1px solid #880e4f;
+    }
+        
+    .underline:after {
+        border-bottom: 1px solid #880e4f;
+    }
+    
+   .MuiOutlinedInput-root {
         fieldset {
             border-color: #000000;
         }
@@ -67,6 +80,8 @@ export const StyledTextField = styled(TextField)`
         }
     }
 `;
+
+
 export const StyledPrimaryButton = styled(Button)`
     width: 100%;
     height: 50px;
@@ -94,6 +109,7 @@ export const StyledFormControl = styled(FormControl)`
     label.Mui-focused {
         color: #880e4f;
     }
+    
     .MuiOutlinedInput-root {
         fieldset {
             border-color: #000000;

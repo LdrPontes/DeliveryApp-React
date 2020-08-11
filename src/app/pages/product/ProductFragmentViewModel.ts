@@ -14,33 +14,72 @@ export class ProductFragmentViewModel {
     readProductSectionUseCase = new ReadProductSectionUseCase()
     deleteProductSectionUseCase = new DeleteProductSectionUseCase()
 
+    /**
+     * ProductForm Observables and variables
+     */
+    @observable
+    dialogProductFormOpen = false
 
     @observable
-    search = ''
-    @observable
-    newCategoryName = ''
+    isProductFormLoading = false
 
     @observable
-    dialogCategoryOpen = false
-
-    isCategoryOpenForEdit = false
+    productTitle = ''
 
     @observable
-    isFormProductSectionLoading = false
+    productDescription = ''
 
     @observable
-    isLoading = false
+    productPrice = ''
+
+    @observable
+    productImg = ''
+
+    @observable
+    optionals: string[] = ['Adicionais', 'Combos', 'Bebidas']
+
+    @observable
+    selectedOptionals: string[] = []
+
+    isProductFormOpenedForEdit = false
     
+    openedProductSectionId = 0;
+
+
+    /**
+     * ProductSectionForm Observables and variables
+     */
+
+    @observable
+    productSectionName = ''
+
+    @observable
+    dialogProductSectionFormOpen = false
+
+    @observable
+    isProductSectionFormLoading = false
+
     @observable
     errorProductSectionName = ''
 
+    editProductSectionId = 0;
+    
+    isProductSectionFormOpenedForEdit = false
+
+    /**
+     * ProductFragment Observables
+     */
     @observable
-    sections: ProductSection[] = []
+    search = ''
+
+    @observable
+    isLoading = false
 
     @observable
     errorApi = ''
 
-    editCategoryId = 0;
+    @observable
+    sections: ProductSection[] = []
 
     @action
     async saveProductSection(): Promise<void> {
@@ -49,28 +88,29 @@ export class ProductFragmentViewModel {
         try {
             this.errorProductSectionName = ''
 
-            if (this.newCategoryName === '') {
+            if (this.productSectionName === '') {
                 this.errorProductSectionName = 'Informe um nome'
                 return
             }
 
-            this.isFormProductSectionLoading = true
+            this.isProductSectionFormLoading = true
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            await this.saveProductSectionUseCase.execute(new SaveProductSectionParams(this.newCategoryName, user!.id))
+            await this.saveProductSectionUseCase.execute(new SaveProductSectionParams(this.productSectionName, user!.id))
             
-            this.newCategoryName = ''
+            this.productSectionName = ''
 
-            this.dialogCategoryOpen = false
+            this.dialogProductSectionFormOpen = false
         
         } catch (error) {
             if (error instanceof AppError) {
                 this.errorApi = 'Erro ao salvar categoria. Tente novamente.'
             }
         }
-        this.isFormProductSectionLoading = false
+        this.isProductSectionFormLoading = false
     }
+  
     @action
     async updateProductSection(): Promise<void> {
         this.errorApi = ''
@@ -78,26 +118,26 @@ export class ProductFragmentViewModel {
         try {
             this.errorProductSectionName = ''
 
-            if (this.newCategoryName === '') {
+            if (this.productSectionName === '') {
                 this.errorProductSectionName = 'Informe um nome'
                 return
             }
 
-            this.isFormProductSectionLoading = true
+            this.isProductSectionFormLoading = true
 
-            await this.updateProductSectionUseCase.execute(new UpdateProductSectionParams(this.editCategoryId, this.newCategoryName))
+            await this.updateProductSectionUseCase.execute(new UpdateProductSectionParams(this.editProductSectionId, this.productSectionName))
 
-            this.newCategoryName = ''
-            this.editCategoryId = 0
+            this.productSectionName = ''
+            this.editProductSectionId = 0
 
-            this.dialogCategoryOpen = false
+            this.dialogProductSectionFormOpen = false
 
         } catch (error) {
             if (error instanceof AppError) {
                 this.errorApi = 'Erro ao salvar categoria. Tente novamente.'
             }
         }
-        this.isFormProductSectionLoading = false
+        this.isProductSectionFormLoading = false
     }
 
     @action
@@ -138,6 +178,13 @@ export class ProductFragmentViewModel {
             }
         }
         this.isLoading = false
+    }
+
+
+    @action
+    async readOptionalSection(): Promise<void> {
+        //TODO
+        this.optionals = ['Adicionais', 'Combos', 'Bebidas']
     }
 
 }
