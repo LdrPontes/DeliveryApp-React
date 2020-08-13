@@ -5,12 +5,12 @@ import { OptionalSection } from "../../../domain/entities/OptionalSection";
 
 export class OptionalSectionRepository implements IOptionalSectionRepository {
 
-    async save(name: string, enterprise_id: number): Promise<OptionalSection> {
+    async save(name: string, enterprise_id: number, min: number, max: number): Promise<OptionalSection> {
         try {
 
-            const response = await api.post('/section/optional/save', { name: name, enterprise_id: enterprise_id })
+            const response = await api.post('/section/optional/save', { name: name, enterprise_id: enterprise_id, min: min, max: max })
 
-            return new OptionalSection(response.data.id, response.data.name, response.data.enterprise_id)
+            return new OptionalSection(response.data.id, response.data.name, response.data.enterprise_id, response.data.min, response.data.max)
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
@@ -46,12 +46,12 @@ export class OptionalSectionRepository implements IOptionalSectionRepository {
     }
 
 
-    async update(id: number, name: string): Promise<OptionalSection> {
+    async update(id: number, name: string, min: number, max: number): Promise<OptionalSection> {
         try {
 
-            const response = await api.put('/section/optional/update', { name: name, id: id })
+            const response = await api.put('/section/optional/update', { name: name, id: id, min: min, max: max})
 
-            return new OptionalSection(response.data.id, response.data.name, response.data.enterprise_id)
+            return new OptionalSection(response.data.id, response.data.name, response.data.enterprise_id, response.data.min, response.data.max)
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
