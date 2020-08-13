@@ -22,11 +22,11 @@ class ProductFragment extends Component {
 
     render(): JSX.Element {
         return (<Container>
-            {<Snackbar open={this.model.errorApi !== ''} autoHideDuration={4000} onClose={() => this.model.errorApi = ''}>
+            <Snackbar open={this.model.errorApi !== ''} autoHideDuration={4000} onClose={() => this.model.errorApi = ''}>
                 <Alert severity="error">
                     {this.model.errorApi}
                 </Alert>
-            </Snackbar>}
+            </Snackbar>
             <StyledTextField
                 label="Pesquisar"
                 variant="outlined"

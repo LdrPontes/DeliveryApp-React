@@ -5,11 +5,11 @@ import { StyledTextField as TextField, StyledPrimaryButton as Button } from "../
 
 export const Container = styled.div`
     width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
     background: white;
     flex-direction: column;
+    padding-bottom: 50px;
 `;
 
 export const StyledFab = styled(Fab)`
@@ -45,6 +45,7 @@ export const StyledFabSection = styled(Fab)`
 
 export const StyledTextField = styled(TextField)`
     max-width: 400px;
+    margin-bottom: 75px;
 `;
 
 export const StyledPrimaryButton = styled(Button)`
