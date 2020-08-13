@@ -136,7 +136,7 @@ export class ProductFragmentViewModel {
 
         } catch (error) {
             if (error instanceof AppError) {
-                this.errorApi = 'Erro ao salvar categoria. Tente novamente.'
+                this.errorApi = 'Erro ao salvar a categoria. Tente novamente.'
             }
         }
         this.isProductSectionFormLoading = false
@@ -165,7 +165,7 @@ export class ProductFragmentViewModel {
 
         } catch (error) {
             if (error instanceof AppError) {
-                this.errorApi = 'Erro ao salvar categoria. Tente novamente.'
+                this.errorApi = 'Erro ao atualizar a categoria. Tente novamente.'
             }
         }
         this.isProductSectionFormLoading = false
@@ -185,7 +185,7 @@ export class ProductFragmentViewModel {
 
         } catch (error) {
             if (error instanceof AppError) {
-                this.errorApi = 'Erro ao buscar dados. Tente novamente.'
+                this.errorApi = 'Erro ao delete a categoria. Tente novamente.'
             }
         }
         this.isLoading = false
