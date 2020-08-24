@@ -101,9 +101,9 @@ export class RegisterFormViewModel {
             return true
         }         
 
-        if(this.password === '') {
+        if(this.password === '' && this.password.length < 6) {
             this.errorPassword = true
-            this.errorPasswordMsg = 'Informe uma senha'
+            this.errorPasswordMsg = 'Informe uma senha válida'
             return true
         }    
 
