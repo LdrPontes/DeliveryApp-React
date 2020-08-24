@@ -10,4 +10,5 @@ export const StyledAvatar = styled(Avatar)`
 export const Container = styled.div`
     width: 75px;
     height: 75px;
+    align-self: center;
 `;

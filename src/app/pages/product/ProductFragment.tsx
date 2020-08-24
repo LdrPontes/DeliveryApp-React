@@ -1,5 +1,5 @@
-import { Component } from "react";
-import React from "react";
+import React, { Component } from "react";
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Container, StyledTextField, StyledFab, ContainerProductSection, StyledFabSection, Section, ContainerSectionIcon, ContainerTitle, CardContainer, StyledAvatar, StyledDescription, ContainerCardRight, ContainerCardLeft } from "./styles";
 import { ProductFragmentViewModel } from "./ProductFragmentViewModel";
 import { InputAdornment, IconButton, Snackbar, Card, Typography } from "@material-ui/core";
@@ -19,6 +19,55 @@ class ProductFragment extends Component {
     model = new ProductFragmentViewModel()
 
     state = {}
+
+    onDragEndProduct = (idx: number, result: DropResult): void => {
+        const { destination, source, reason } = result;
+
+        // Not a thing to do...
+        if (!destination || reason === 'CANCEL') {
+            return;
+        }
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const products = Object.assign([], this.model.sections[idx].products);
+        const product = this.model.sections[idx].products[source.index];
+        products.splice(source.index, 1);
+        products.splice(destination.index, 0, product);
+
+        this.model.sections[idx].products = products
+
+    }
+
+
+    onDragEndSection = (result: DropResult): void => {
+        const { destination, source, reason } = result;
+
+        // Not a thing to do...
+        if (!destination || reason === 'CANCEL') {
+            return;
+        }
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const sections = Object.assign([], this.model.sections);
+        const section = this.model.sections[source.index];
+        sections.splice(source.index, 1);
+        sections.splice(destination.index, 0, section);
+
+        this.model.sections = sections
+
+    }
 
     render(): JSX.Element {
         return (<Container>
@@ -51,7 +100,8 @@ class ProductFragment extends Component {
             />
             {this.model.sections.length > 0 ?
                 <ContainerProductSection>
-                    {this.model.sections.map(section => {
+
+                    {this.model.sections.map((section, idx) => {
                         return (
                             <Section key={section.id}>
                                 <ContainerTitle>
@@ -65,44 +115,58 @@ class ProductFragment extends Component {
                                         </IconButton>
                                     </ContainerSectionIcon>
                                 </ContainerTitle>
-                                {section.products.length === 0 ? <small>Essa categoria ainda nāo possui produtos.</small>
-                                    : section.products.map((product) => {
-                                        return (<Card key={product.id} style={{ marginBottom: 16 }}>
-                                            <CardContainer>
-                                                <StyledAvatar src={product.img_url} />
-                                                <ContainerCardLeft>
-                                                    <Typography component="h5" variant="h5">
-                                                        {product.title}
-                                                    </Typography>
-                                                    <StyledDescription variant="subtitle1" color="textSecondary">
-                                                        {product.description}
-                                                    </StyledDescription>
-                                                </ContainerCardLeft>
-                                                <ContainerCardRight>
-                                                    <Typography color="textSecondary" variant="h5">
-                                                        {('R$ ' + product.price).replace('.', ',')}
-                                                    </Typography>
-                                                </ContainerCardRight>
-                                            </CardContainer>
-                                            <ContainerSectionIcon>
-                                                <IconButton color="inherit" onClick={() => this.handleCopyProduct(product)}>
-                                                    <CopyIcon />
-                                                </IconButton>
-                                                <IconButton color="inherit" onClick={() => this.handleEditProduct(product)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton color="inherit" onClick={() => this.model.deleteProduct(product.id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ContainerSectionIcon>
+                                <DragDropContext onDragEnd={(r) => this.onDragEndProduct(idx, r)}>
+                                    <Droppable droppableId={section.id.toString()}>
+                                        {provided => (<div {...provided.droppableProps}
+                                            ref={provided.innerRef}>
+                                            {section.products.length === 0 ? <small>Essa categoria ainda nāo possui produtos.</small>
+                                                : section.products.map((product, index) => {
+                                                    return (<Draggable draggableId={product.id.toString()} key={product.id} index={index}>
+                                                        {provided => (<div ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}>
+                                                            <Card style={{ marginBottom: 16 }} >
+                                                                <CardContainer>
+                                                                    <StyledAvatar src={product.img_url} />
+                                                                    <ContainerCardLeft>
+                                                                        <Typography component="h5" variant="h5">
+                                                                            {product.title}
+                                                                        </Typography>
+                                                                        <StyledDescription variant="subtitle1" color="textSecondary">
+                                                                            {product.description}
+                                                                        </StyledDescription>
+                                                                    </ContainerCardLeft>
+                                                                    <ContainerCardRight>
+                                                                        <Typography color="textSecondary" variant="h5">
+                                                                            {('R$ ' + product.price).replace('.', ',')}
+                                                                        </Typography>
+                                                                    </ContainerCardRight>
+                                                                </CardContainer>
+                                                                <ContainerSectionIcon>
+                                                                    <IconButton color="inherit" onClick={() => this.handleCopyProduct(product)}>
+                                                                        <CopyIcon />
+                                                                    </IconButton>
+                                                                    <IconButton color="inherit" onClick={() => this.handleEditProduct(product)}>
+                                                                        <EditIcon />
+                                                                    </IconButton>
+                                                                    <IconButton color="inherit" onClick={() => this.model.deleteProduct(product.id)}>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                </ContainerSectionIcon>
 
-                                        </Card>)
-                                    })
-                                }
+                                                            </Card></div>)}
+                                                    </Draggable>)
+                                                })
+                                            }{provided.placeholder}</div>)}
+                                    </Droppable>
+                                </DragDropContext>
+
                                 <StyledFabSection onClick={() => this.handleNewProductClick(section.id)} ><Add /></StyledFabSection>
                             </Section>
                         )
-                    })}
+                    }
+                    )
+                    }
                 </ContainerProductSection>
                 : <EmptyContent title="Sem dados" description="Você ainda nāo possui categorias e produtos cadastrados" ></EmptyContent>}
 
@@ -154,7 +218,7 @@ class ProductFragment extends Component {
         this.model.productPreviewImg = product.img_url
 
         const productOptionalSections = []
-        for(const i of product.optional_sections){
+        for (const i of product.optional_sections) {
             productOptionalSections.push(i.id)
         }
 
@@ -172,7 +236,7 @@ class ProductFragment extends Component {
         this.model.productPreviewImg = ''
 
         const productOptionalSections = []
-        for(const i of product.optional_sections){
+        for (const i of product.optional_sections) {
             productOptionalSections.push(i.id)
         }
 

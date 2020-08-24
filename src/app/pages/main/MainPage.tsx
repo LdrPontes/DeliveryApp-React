@@ -14,6 +14,7 @@ import { MainPageViewModel } from './MainPageViewModel';
 import { observer } from 'mobx-react';
 import ProductFragment from '../product/ProductFragment';
 import OptionalFragment from '../optional/OptionalFragment';
+import ProfileFragment from '../profile/ProfileFragment';
 
 @observer
 class MainPage extends Component {
@@ -109,6 +110,7 @@ class MainPage extends Component {
             <ContentContainer>{
                     this.model.position === 0 ? <ProductFragment></ProductFragment>
                 :   this.model.position === 1 ? <OptionalFragment></OptionalFragment>
+                :   this.model.position === 4 ? <ProfileFragment></ProfileFragment>
                 :   <></>
                 
                 }

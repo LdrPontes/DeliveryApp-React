@@ -16,9 +16,8 @@ export const RightIconContainer = styled.div`
 
 export const ContentContainer = styled.div`
     height: 90vh;
-    margin-left: 250px !important;
-    margin-right: 10px !important;
-    margin-top: 75px;
+    margin-left: 240px !important;
+    margin-top: 65px;
     z-index: -1;
 
 `;
