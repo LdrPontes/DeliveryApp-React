@@ -28,18 +28,19 @@ export const Container = styled.div`
 
 export const ContainerForm = styled.div`
     width: 100%;
+    height: 93vh;
     display: flex;
     align-items: center;
-    background: white;
+    background: #F5F5F5;
     flex-direction: column;
 `;
 
 
 export const ContainerPanel = styled.div`
-    width: 50vh;
-    height: 70vh;
+    width: 30vw;
     display: flex;
     flex-direction: column;
+    background: white;
     padding-top: 5%;
 `;
 
