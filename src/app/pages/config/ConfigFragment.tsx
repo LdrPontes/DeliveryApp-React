@@ -3,8 +3,8 @@ import { Container, ContainerForm, StyledAppBar, StyledTabs, StyledTab, Containe
 import { TabContext } from "@material-ui/lab";
 import { ConfigViewModel } from "./ConfigViewModel";
 import { observer } from "mobx-react";
-import { Card, Typography, Divider, FormControlLabel, Box } from "@material-ui/core";
-import { StyledPrimaryButton } from "../../global/globalStyles";
+import { Card, Typography, Divider, FormControlLabel, Box, MuiThemeProvider, InputLabel, Select, MenuItem, createMuiTheme } from "@material-ui/core";
+import { StyledPrimaryButton, StyledFormControl } from "../../global/globalStyles";
 import CurrencyInput from "../../components/CurrencyInput/CurrencyInput";
 
 @observer
@@ -12,7 +12,18 @@ class ConfigFragment extends Component {
 
     model = new ConfigViewModel()
 
+    theme = createMuiTheme({
+        palette: {
+            primary: { 500: '#880e4f' }
+        },
+    });
+
+    componentDidMount(): void {
+        this.model.initEnterpriseSettings()
+    }
+
     render(): JSX.Element {
+        console.log('Render')
         return (<Container>
             <ContainerForm>
                 <TabContext value={this.model.selectedTab.toString()}>
@@ -23,8 +34,8 @@ class ConfigFragment extends Component {
                         </StyledTabs>
                     </StyledAppBar>
                     {
-                        this.model.selectedTab === 0 ? this.panelEnterpriseConfig()
-                            : this.model.selectedTab === 1 ? this.panelDeliveryConfig()
+                        this.model.selectedTab === 0 && this.model.enterpriseSettings !== undefined ? this.panelEnterpriseConfig()
+                            : this.model.selectedTab === 1 && this.model.enterpriseSettings !== undefined ? this.panelDeliveryConfig()
                                 : <></>
                     }
 
@@ -50,10 +61,10 @@ class ConfigFragment extends Component {
                         </Typography>
                         <FormControlLabel
                             value="start"
-                            control={<CustomSwitch color="primary" />}
+                            control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise_settings?.ask_cpf} color="primary" />}
                             label={
                                 <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                    Habilitado
+                                    {this.model.enterpriseSettings?.enterprise_settings?.ask_cpf ? 'Habilitado' : 'Desabilitado'}
                                 </Typography>
                             }
                             labelPlacement="start"
@@ -157,12 +168,26 @@ class ConfigFragment extends Component {
                         <Typography variant="body1" style={{ marginTop: '8px', color: '#424242' }}>
                             Entrega grátis acima de:
                         </Typography>
-                        <NumberInput
-                            margin='dense'
-                            label="Preço"
-                            variant="filled"
-                            InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
-                        />
+                        <Horizontal>
+                            <Box mr={2}>
+                                <FormControlLabel
+                                    value="start"
+                                    control={<CustomSwitch color="primary" />}
+                                    label={
+                                        <Typography variant="body2" style={{ color: '#BDBDBD' }}>
+                                            Habilitado
+                                </Typography>
+                                    }
+                                    labelPlacement="start"
+                                />
+                            </Box>
+                            <NumberInput
+                                margin='dense'
+                                label="Preço"
+                                variant="filled"
+                                InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
+                            />
+                        </Horizontal>
                     </Horizontal>
                     <Divider light style={{ marginTop: '8px', marginBottom: '8px' }} />
                     <Typography variant="body1" gutterBottom style={{ color: '#BDBDBD' }}>
@@ -172,12 +197,32 @@ class ConfigFragment extends Component {
                         <Typography variant="body1" style={{ marginTop: '8px', color: '#424242' }}>
                             Taxa de entrega:
                         </Typography>
-                        <NumberInput
-                            margin='dense'
-                            label="Taxa"
-                            variant="filled"
-                            InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
-                        />
+                        <Horizontal>
+                            <Box minWidth={150} mr={1}>
+                                <MuiThemeProvider theme={this.theme}>
+                                    <StyledFormControl margin='dense' variant="filled" >
+                                        <InputLabel id="demo-simple-select-outlined-label">Tipo</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-outlined-label"
+                                            id="demo-simple-select-outlined"
+                                            label="Tipo"
+                                            value={''}>
+                                            {['A combinar', 'Valor'].map(fee => {
+                                                return (<MenuItem key={fee} value={fee}>{fee}</MenuItem>);
+                                            })}
+                                        </Select>
+                                    </StyledFormControl>
+                                </MuiThemeProvider>
+                            </Box>
+
+                            <NumberInput
+                                margin='dense'
+                                label="Taxa"
+                                variant="filled"
+                                InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
+                            />
+                        </Horizontal>
+
                     </Horizontal>
                     <Horizontal>
                         <Typography variant="body1" style={{ marginTop: '8px', color: '#424242' }}>

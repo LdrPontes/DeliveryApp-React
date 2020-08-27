@@ -26,7 +26,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 response.data.document_type,
                 response.data.document,
                 response.data.logo_url,
-                response.data.address)
+                response.data.address, response.data.settings)
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
@@ -51,7 +51,8 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 response.data.document_type,
                 response.data.document,
                 response.data.logo_url,
-                response.data.address)
+                response.data.address,
+                response.data.settings)
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)

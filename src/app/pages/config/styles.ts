@@ -50,7 +50,7 @@ export const Horizontal = styled.div`
 `;
 
 export const NumberInput = styled(StyledTextField)`
-    width: 200px;
+    width: 150px;
 
 `;
 
