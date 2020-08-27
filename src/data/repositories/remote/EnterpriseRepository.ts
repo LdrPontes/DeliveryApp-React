@@ -2,6 +2,7 @@ import { IEnterpriseRepository } from "../../../domain/repositories/remote/IEnte
 import api from "../utils/RemoteConnection";
 import { Enterprise } from "../../../domain/entities/Enterprise";
 import { AppError } from "../../../domain/utils/AppError";
+import { EnterpriseSettings } from "../../../domain/entities/EnterpriseSettings";
 
 export class EnterpriseRepository implements IEnterpriseRepository {
 
@@ -53,6 +54,21 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 response.data.logo_url,
                 response.data.address,
                 response.data.settings)
+
+        } catch (error) {
+            throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
+        }
+    }
+
+    async updateSettings(id: number, settings: EnterpriseSettings): Promise<boolean> {
+        try {
+
+            const response = await api.put('/enterprise/update/settings', {
+                id: id,
+                settings: settings
+            })
+
+            return response.data.success
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)

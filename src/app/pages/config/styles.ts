@@ -49,6 +49,12 @@ export const Horizontal = styled.div`
     align-items: center;
 `;
 
+export const RowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+
 export const NumberInput = styled(StyledTextField)`
     width: 150px;
 

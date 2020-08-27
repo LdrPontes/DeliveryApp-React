@@ -9,9 +9,9 @@ export class Enterprise {
     document: string
     logo_url: string
     address: string
-    settings: EnterpriseSettings
+    settings: EnterpriseSettings | string
 
-    constructor(id: number, category_id: number, name: string, document_type: string, document: string, logo_url: string, address: string, settings: EnterpriseSettings){
+    constructor(id: number, category_id: number, name: string, document_type: string, document: string, logo_url: string, address: string, settings: EnterpriseSettings | string){
         this.id = id
         this.name = name
         this.document_type = document_type
