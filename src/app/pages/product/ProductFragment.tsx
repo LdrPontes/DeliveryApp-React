@@ -293,7 +293,6 @@ class ProductFragment extends Component {
     handlePriceChange(event: any): void {
 
         const valor = event.target.value;
-        console.log(valor)
         this.model.productPrice = valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     }
 
