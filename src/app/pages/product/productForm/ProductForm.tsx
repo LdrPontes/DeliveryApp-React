@@ -84,7 +84,7 @@ export default function ProductForm(props: ProductFormProps): JSX.Element {
         <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
             <Title>Novo produto</Title>
             <DialogContent>
-                <AvatarInput preview={props.image} handlerImageChange={handleAvatarChange}></AvatarInput>
+                <AvatarInput variant="square" preview={props.image} handlerImageChange={handleAvatarChange}></AvatarInput>
                 <StyledTextField
                     error={props.errorTitle !== undefined && props.errorTitle !== ''}
                     helperText={props.errorTitle}

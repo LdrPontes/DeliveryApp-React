@@ -127,7 +127,7 @@ class ProductFragment extends Component {
                                                             {...provided.dragHandleProps}>
                                                             <Card style={{ marginBottom: 16 }} >
                                                                 <CardContainer>
-                                                                    <StyledAvatar src={product.img_url} />
+                                                                    <StyledAvatar variant="square" src={product.img_url} />
                                                                     <ContainerCardLeft>
                                                                         <Typography component="h5" variant="h5">
                                                                             {product.title}
