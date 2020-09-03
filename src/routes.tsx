@@ -6,6 +6,7 @@ import LoginPage from './app/pages/login/LoginPage';
 import RegisterPage from './app/pages/register/RegisterPage';
 import history from './history';
 import EnterpriseRegisterPage from './app/pages/enterpriseRegister/EnterpriseRegisterPage';
+import OrderPage from './app/pages/order/OrderPage';
 
 export default function Routes() {
     return (
@@ -16,6 +17,7 @@ export default function Routes() {
                     <Route path="/login" exact component={LoginPage} />
                     <Route path="/register" exact component={RegisterPage} />
                     <Route path="/enterprise-register" exact component={EnterpriseRegisterPage} />
+                    <Route path="/pedido/:name" exact component={OrderPage} />
                 </Switch>
             </div>
         </Router>
