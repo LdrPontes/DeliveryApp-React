@@ -6,7 +6,8 @@ import Button from '@material-ui/core/Button'
 
 export default createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700&display=swap');
+    
     * {
     margin: 0;
     padding: 0;
