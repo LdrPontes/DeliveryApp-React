@@ -129,7 +129,7 @@ export class ConfigViewModel {
 
 
         const newDailyWork = new DailyWork(this.newStartDay, this.newEndDay, this.newStartTime, this.newEndTime)
-        this.enterpriseSettings?.enterprise_settings.daily_works.push(newDailyWork)
+        this.enterpriseSettings?.enterprise.daily_works.push(newDailyWork)
 
         this.openAddTimeDialog = false
 

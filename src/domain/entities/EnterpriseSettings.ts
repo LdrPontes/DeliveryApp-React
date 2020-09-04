@@ -1,6 +1,6 @@
 export interface EnterpriseSettings {
-    delivery_settings: DeliverySettings;
-    enterprise_settings: EnterpriseSettingsClass;
+    delivery: DeliverySettings;
+    enterprise: EnterpriseSettingsClass;
 }
 
 export interface DeliverySettings {

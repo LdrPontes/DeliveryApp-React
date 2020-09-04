@@ -66,7 +66,7 @@ class ConfigFragment extends Component {
                         <Typography variant="body1" gutterBottom style={{ color: '#BDBDBD' }}>
                             DIAS E HORÁRIOS:
                     </Typography>
-                        {this.model.enterpriseSettings?.enterprise_settings.daily_works.map((dailyWork, idx) => {
+                        {this.model.enterpriseSettings?.enterprise?.daily_works.map((dailyWork, idx) => {
                             return (
                                 <RowContainer key={idx}>
                                     <Box mr={1}>
@@ -154,10 +154,10 @@ class ConfigFragment extends Component {
                         </Typography>
                             <FormControlLabel
                                 value="start"
-                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise_settings?.ask_cpf} onChange={(e) => this.handleCheckAskCPF(e)} color="primary" />}
+                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise?.ask_cpf} onChange={(e) => this.handleCheckAskCPF(e)} color="primary" />}
                                 label={
                                     <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                        {this.model.enterpriseSettings?.enterprise_settings?.ask_cpf ? 'Habilitado' : 'Desabilitado'}
+                                        {this.model.enterpriseSettings?.enterprise?.ask_cpf ? 'Habilitado' : 'Desabilitado'}
                                     </Typography>
                                 }
                                 labelPlacement="start"
@@ -169,10 +169,10 @@ class ConfigFragment extends Component {
                         </Typography>
                             <FormControlLabel
                                 value="start"
-                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise_settings?.observation_enabled} onChange={(e) => this.handleCheckObservations(e)} color="primary" />}
+                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise?.observation_enabled} onChange={(e) => this.handleCheckObservations(e)} color="primary" />}
                                 label={
                                     <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                        {this.model.enterpriseSettings?.enterprise_settings?.observation_enabled ? 'Habilitado' : 'Desabilitado'}
+                                        {this.model.enterpriseSettings?.enterprise?.observation_enabled ? 'Habilitado' : 'Desabilitado'}
                                     </Typography>
                                 }
                                 labelPlacement="start"
@@ -189,10 +189,10 @@ class ConfigFragment extends Component {
                     </Typography>
                             <FormControlLabel
                                 value="start"
-                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise_settings?.accept_money} onChange={(e) => this.handleCheckMoney(e)} color="primary" />}
+                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise?.accept_money} onChange={(e) => this.handleCheckMoney(e)} color="primary" />}
                                 label={
                                     <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                        {this.model.enterpriseSettings?.enterprise_settings?.accept_money ? 'Habilitado' : 'Desabilitado'}
+                                        {this.model.enterpriseSettings?.enterprise?.accept_money ? 'Habilitado' : 'Desabilitado'}
                                     </Typography>
                                 }
                                 labelPlacement="start"
@@ -205,10 +205,10 @@ class ConfigFragment extends Component {
                     </Typography>
                             <FormControlLabel
                                 value="start"
-                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise_settings?.accept_credit_card} color="primary" onChange={(e) => this.handleCheckCreditCard(e)} />}
+                                control={<CustomSwitch checked={this.model.enterpriseSettings?.enterprise?.accept_credit_card} color="primary" onChange={(e) => this.handleCheckCreditCard(e)} />}
                                 label={
                                     <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                        {this.model.enterpriseSettings?.enterprise_settings?.accept_credit_card ? 'Habilitado' : 'Desabilitado'}
+                                        {this.model.enterpriseSettings?.enterprise?.accept_credit_card ? 'Habilitado' : 'Desabilitado'}
                                     </Typography>
                                 }
                                 labelPlacement="start"
@@ -221,12 +221,12 @@ class ConfigFragment extends Component {
                             <FormControlLabel
                                 value="start"
                                 control={<CustomSwitch
-                                    checked={this.model.enterpriseSettings?.enterprise_settings?.accept_debit_card}
+                                    checked={this.model.enterpriseSettings?.enterprise?.accept_debit_card}
                                     color="primary"
                                     onChange={(e) => this.handleCheckDebitCard(e)} />}
                                 label={
                                     <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                        {this.model.enterpriseSettings?.enterprise_settings?.accept_debit_card ? 'Habilitado' : 'Desabilitado'}
+                                        {this.model.enterpriseSettings?.enterprise?.accept_debit_card ? 'Habilitado' : 'Desabilitado'}
                                     </Typography>
                                 }
                                 labelPlacement="start"
@@ -258,7 +258,7 @@ class ConfigFragment extends Component {
                             margin='dense'
                             label="Preço"
                             variant="filled"
-                            value={this.model.enterpriseSettings?.delivery_settings.min_price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            value={this.model.enterpriseSettings?.delivery?.min_price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                             onChange={(e) => this.handleMinPrice(e)}
                             InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
                         />
@@ -271,23 +271,23 @@ class ConfigFragment extends Component {
                             <Box mr={2}>
                                 <FormControlLabel
                                     value="start"
-                                    control={<CustomSwitch checked={this.model.enterpriseSettings?.delivery_settings.free_delivery_above_enabled}
+                                    control={<CustomSwitch checked={this.model.enterpriseSettings?.delivery?.free_delivery_above_enabled}
                                         onChange={(e) => this.handleCheckFreeDeliveryAbove(e)}
                                         color="primary" />}
                                     label={
                                         <Typography variant="body2" style={{ color: '#BDBDBD' }}>
-                                            {this.model.enterpriseSettings?.delivery_settings.free_delivery_above_enabled ? 'Habilitado' : 'Desabilitado'}
+                                            {this.model.enterpriseSettings?.delivery?.free_delivery_above_enabled ? 'Habilitado' : 'Desabilitado'}
                                         </Typography>
                                     }
                                     labelPlacement="start"
                                 />
                             </Box>
                             <NumberInput
-                                disabled={!this.model.enterpriseSettings?.delivery_settings.free_delivery_above_enabled}
+                                disabled={!this.model.enterpriseSettings?.delivery?.free_delivery_above_enabled}
                                 margin='dense'
                                 label="Preço"
                                 variant="filled"
-                                value={this.model.enterpriseSettings?.delivery_settings.free_delivery_above.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                value={this.model.enterpriseSettings?.delivery?.free_delivery_above.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                 onChange={(e) => this.handlePriceFreeDeliveryAbove(e)}
                                 InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
                             />
@@ -311,7 +311,7 @@ class ConfigFragment extends Component {
                                             id="demo-simple-select-outlined"
                                             label="Tipo"
                                             onChange={(e) => this.handleDeliveryFeeType(e)}
-                                            value={this.model.enterpriseSettings?.delivery_settings.delivery_fee_type}>
+                                            value={this.model.enterpriseSettings?.delivery?.delivery_fee_type}>
                                             {[{ id: 0, name: 'A combinar' }, { id: 1, name: 'Valor' }].map(fee => {
                                                 return (<MenuItem key={fee.id} value={fee.id}>{fee.name}</MenuItem>);
                                             })}
@@ -321,11 +321,11 @@ class ConfigFragment extends Component {
                             </Box>
 
                             <NumberInput
-                                disabled={this.model.enterpriseSettings?.delivery_settings.delivery_fee_type === 0}
+                                disabled={this.model.enterpriseSettings?.delivery?.delivery_fee_type === 0}
                                 margin='dense'
                                 label="Taxa"
                                 variant="filled"
-                                value={this.model.enterpriseSettings?.delivery_settings.delivery_fee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                value={this.model.enterpriseSettings?.delivery?.delivery_fee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                 onChange={(e) => this.handleDeliveryFee(e)}
                                 InputProps={{ inputComponent: CurrencyInput as any, classes: { underline: 'underline' }, disableUnderline: false }}
                             />
@@ -344,7 +344,7 @@ class ConfigFragment extends Component {
                                 margin='dense'
                                 label="Minutos"
                                 variant="filled"
-                                value={this.model.enterpriseSettings?.delivery_settings.delivery_time_start}
+                                value={this.model.enterpriseSettings?.delivery?.delivery_time_start}
                                 onChange={(e) => this.handleDeliveryTimeStart(e)}
                                 InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
                             />
@@ -358,7 +358,7 @@ class ConfigFragment extends Component {
                                 margin='dense'
                                 label="Minutos"
                                 variant="filled"
-                                value={this.model.enterpriseSettings?.delivery_settings.delivery_time_end}
+                                value={this.model.enterpriseSettings?.delivery?.delivery_time_end}
                                 onChange={(e) => this.handleDeliveryTimeEnd(e)}
                                 InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
                             />
@@ -469,92 +469,92 @@ class ConfigFragment extends Component {
     }
 
     handleCheckDebitCard(e: React.ChangeEvent<HTMLInputElement>): void {
-        if (this.model.enterpriseSettings?.enterprise_settings?.accept_debit_card !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.accept_debit_card = e.target.checked
+        if (this.model.enterpriseSettings?.enterprise?.accept_debit_card !== undefined) {
+            this.model.enterpriseSettings.enterprise.accept_debit_card = e.target.checked
         }
     }
 
     handleCheckCreditCard(e: React.ChangeEvent<HTMLInputElement>): void {
-        if (this.model.enterpriseSettings?.enterprise_settings?.accept_credit_card !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.accept_credit_card = e.target.checked
+        if (this.model.enterpriseSettings?.enterprise?.accept_credit_card !== undefined) {
+            this.model.enterpriseSettings.enterprise.accept_credit_card = e.target.checked
         }
     }
 
     handleCheckMoney(e: React.ChangeEvent<HTMLInputElement>): void {
-        if (this.model.enterpriseSettings?.enterprise_settings?.accept_money !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.accept_money = e.target.checked
+        if (this.model.enterpriseSettings?.enterprise?.accept_money !== undefined) {
+            this.model.enterpriseSettings.enterprise.accept_money = e.target.checked
         }
     }
 
     handleCheckObservations(e: React.ChangeEvent<HTMLInputElement>): void {
-        if (this.model.enterpriseSettings?.enterprise_settings?.observation_enabled !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.observation_enabled = e.target.checked
+        if (this.model.enterpriseSettings?.enterprise?.observation_enabled !== undefined) {
+            this.model.enterpriseSettings.enterprise.observation_enabled = e.target.checked
         }
     }
 
     handleCheckAskCPF(e: React.ChangeEvent<HTMLInputElement>): void {
-        if (this.model.enterpriseSettings?.enterprise_settings?.ask_cpf !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.ask_cpf = e.target.checked
+        if (this.model.enterpriseSettings?.enterprise?.ask_cpf !== undefined) {
+            this.model.enterpriseSettings.enterprise.ask_cpf = e.target.checked
         }
     }
 
     handleMinPrice(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.min_price !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.min_price = Number(e.target.value)
+        if (this.model.enterpriseSettings?.delivery?.min_price !== undefined) {
+            this.model.enterpriseSettings.delivery.min_price = Number(e.target.value)
         }
     }
 
     handleCheckFreeDeliveryAbove(e: React.ChangeEvent<HTMLInputElement>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.free_delivery_above_enabled !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.free_delivery_above_enabled = e.target.checked
+        if (this.model.enterpriseSettings?.delivery?.free_delivery_above_enabled !== undefined) {
+            this.model.enterpriseSettings.delivery.free_delivery_above_enabled = e.target.checked
         }
     }
 
     handlePriceFreeDeliveryAbove(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.free_delivery_above !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.free_delivery_above = Number(e.target.value)
+        if (this.model.enterpriseSettings?.delivery?.free_delivery_above !== undefined) {
+            this.model.enterpriseSettings.delivery.free_delivery_above = Number(e.target.value)
         }
     }
 
     handleDeliveryFee(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.delivery_fee !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.delivery_fee = Number(e.target.value)
+        if (this.model.enterpriseSettings?.delivery?.delivery_fee !== undefined) {
+            this.model.enterpriseSettings.delivery.delivery_fee = Number(e.target.value)
         }
     }
 
     handleDeliveryFeeType(e: React.ChangeEvent<any>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.delivery_fee_type !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.delivery_fee_type = Number(e.target.value)
+        if (this.model.enterpriseSettings?.delivery?.delivery_fee_type !== undefined) {
+            this.model.enterpriseSettings.delivery.delivery_fee_type = Number(e.target.value)
         }
     }
 
     handleDeliveryTimeStart(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.delivery_time_start !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.delivery_time_start = Number(e.target.value)
+        if (this.model.enterpriseSettings?.delivery?.delivery_time_start !== undefined) {
+            this.model.enterpriseSettings.delivery.delivery_time_start = Number(e.target.value)
         }
     }
 
     handleDeliveryTimeEnd(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
-        if (this.model.enterpriseSettings?.delivery_settings?.delivery_time_end !== undefined) {
-            this.model.enterpriseSettings.delivery_settings.delivery_time_end = Number(e.target.value)
+        if (this.model.enterpriseSettings?.delivery?.delivery_time_end !== undefined) {
+            this.model.enterpriseSettings.delivery.delivery_time_end = Number(e.target.value)
         }
     }
 
     handleChangeStartTime(date: Date | null, idx: number): void {
-        if (this.model.enterpriseSettings?.enterprise_settings.daily_works !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.daily_works[idx].start_time = `${date?.getHours()}:${date?.getMinutes()}`
+        if (this.model.enterpriseSettings?.enterprise.daily_works !== undefined) {
+            this.model.enterpriseSettings.enterprise.daily_works[idx].start_time = `${date?.getHours()}:${date?.getMinutes()}`
         }
     }
 
     handleChangeEndTime(date: Date | null, idx: number): void {
-        if (this.model.enterpriseSettings?.enterprise_settings.daily_works !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.daily_works[idx].end_time = `${date?.getHours()}:${date?.getMinutes()}`
+        if (this.model.enterpriseSettings?.enterprise.daily_works !== undefined) {
+            this.model.enterpriseSettings.enterprise.daily_works[idx].end_time = `${date?.getHours()}:${date?.getMinutes()}`
         }
     }
 
     handleDeleteTime(idx: number): void {
-        if (this.model.enterpriseSettings?.enterprise_settings.daily_works !== undefined) {
-            this.model.enterpriseSettings.enterprise_settings.daily_works.splice(idx, 1)
+        if (this.model.enterpriseSettings?.enterprise.daily_works !== undefined) {
+            this.model.enterpriseSettings.enterprise.daily_works.splice(idx, 1)
         }
     }
 
