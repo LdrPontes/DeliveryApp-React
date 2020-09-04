@@ -1,4 +1,5 @@
 import { EnterpriseSettings } from "./EnterpriseSettings"
+import { ProductSection } from "./ProductSection"
 
 export class Enterprise {
 
@@ -10,8 +11,9 @@ export class Enterprise {
     logo_url: string
     address: string
     settings: EnterpriseSettings | string
+    product_sections?: ProductSection[]
 
-    constructor(id: number, category_id: number, name: string, document_type: string, document: string, logo_url: string, address: string, settings: EnterpriseSettings | string){
+    constructor(id: number, category_id: number, name: string, document_type: string, document: string, logo_url: string, address: string, settings: EnterpriseSettings | string, product_sections?: ProductSection[]){
         this.id = id
         this.name = name
         this.document_type = document_type
@@ -20,5 +22,6 @@ export class Enterprise {
         this.address = address
         this.category_id = category_id
         this.settings = settings
+        this.product_sections = product_sections
     }
 }

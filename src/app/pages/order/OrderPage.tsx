@@ -1,94 +1,133 @@
 import React, { Component } from "react";
-import { Container, Header, StyledAvatar, Title, SnackbarContainer, Row, ContainerSection, StyledProductAvatar, ContainerProduct, RowProduct, ProductDescription, ContainerSpaceRow, StyledImage, NumberInput, ProductDescriptionDialog } from "./styles";
-import { Snackbar, IconButton, Typography, Divider, Dialog, DialogContent } from "@material-ui/core";
+import { Container, Header, StyledAvatar, Title, SnackbarContainer, Row, ContainerSection, StyledProductAvatar, ContainerProduct, RowProduct, ProductDescription, ContainerSpaceRow, StyledImage, NumberInput, ProductDescriptionDialog, ContainerSpaceRowProduct, BackgroundImage } from "./styles";
+import { Snackbar, IconButton, Typography, Divider, Dialog, DialogContent, Box, Checkbox, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import { ReactComponent as ShopIcon } from '../../assets/shopping_cart-24px.svg';
-import { ReactComponent as SendIcon } from '../../assets/send-24px.svg';
 import { OrderViewModel } from "./OrderViewModel";
 import { observer } from "mobx-react";
 import { StyledPrimaryButton, StyledTextField } from "../../global/globalStyles";
+import { RouteComponentProps } from "react-router-dom";
+import { ProductSection } from "../../../domain/entities/ProductSection";
+import { Product } from "../../../domain/entities/Product";
+import { OptionalSection } from "../../../domain/entities/OptionalSection";
+import { Optional } from "../../../domain/entities/Optional";
+
+interface MatchParams {
+    code?: string
+}
+
+type Props = RouteComponentProps<MatchParams>
 
 @observer
-class OrderPage extends Component {
+class OrderPage extends Component<Props> {
+
+
+    theme = createMuiTheme({
+        palette: {
+            primary: { 500: '#880e4f' }
+        },
+    });
 
     model = new OrderViewModel()
+
+    componentDidMount(): void {
+        const { code } = this.props.match.params
+
+        this.model.readEnterpriseByCode(code!)
+
+    }
 
     render(): JSX.Element {
         return (
             <Container>
                 <Header>
                     <Title>
-                        Leko's House
+                        {this.model.enterprise?.name}
                     </Title>
                 </Header>
-                <StyledAvatar></StyledAvatar>
+                <StyledAvatar src={this.model.enterprise?.logo_url}></StyledAvatar>
                 <ContainerSection style={{ marginTop: '25vh' }}>
-                    {this.section('Hamburgueres')}
-                    {this.cardProduct()}
-                    {this.cardProduct()}
-                    {this.cardProduct()}
-                    {this.cardProduct()}
-                    {this.section('Refrigeirantes')}
-                    {this.section('Doces')}
-                    {this.section('Batatas')}
+                    {this.model.enterprise?.product_sections?.map((section) => {
+                        return this.section(section)
+                    })}
 
                 </ContainerSection>
                 {this.dialogProduct()}
                 {this.dialogShopCart()}
-                {this.snackbarShopCart()}
+                {!this.model.openDialogProduct ? this.snackbarShopCart() : <></>}
             </Container>
         );
     }
 
-    section(name: string): JSX.Element {
+    section(section: ProductSection): JSX.Element {
         return (
-            <div>
+            <div key={section.id}>
                 <Typography variant="h5" gutterBottom style={{ marginTop: '16px', color: '#000' }}>
-                    {name}
+                    {section.name}
                 </Typography>
                 <Divider light />
+                {section.products.map((product) => {
+                    return this.cardProduct(product)
+                })}
             </div>
         )
     }
 
-    cardProduct(): JSX.Element {
+    cardProduct(product: Product): JSX.Element {
         return (
-            <ContainerProduct onClick={() => this.model.openDialogProduct = true}>
+            <ContainerProduct key={product.id} onClick={() => this.handleDialogProduct(product)}>
                 <RowProduct>
-                    <StyledProductAvatar src="https://exame.com/wp-content/uploads/2020/05/mafe-studio-LV2p9Utbkbw-unsplash.jpg?quality=70&strip=info" variant="square"></StyledProductAvatar>
-                    <ContainerSpaceRow>
-                        <div>
+                    {product.img_url !== '' ? <StyledProductAvatar src={product.img_url} variant="square"></StyledProductAvatar> : <></>}
+                    <ContainerSpaceRowProduct>
+                        <div style={{ alignSelf: 'flex-start' }}>
                             <Typography variant="h6" gutterBottom style={{ color: '#000' }}>
-                                Hamburguer
+                                {product.title}
                             </Typography>
                             <ProductDescription>
-                                {"Hamburgusdfsdfsdfsdfsdfsder\nHamburguer\nHamburguer\nHamburguer"}
+                                {product.description}
                             </ProductDescription>
                         </div>
                         <Typography variant="subtitle1" style={{ fontSize: '20px' }}>
-                            R$ 15,00
+                            {'R$ ' + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace('.', ',')}
                         </Typography>
-                    </ContainerSpaceRow>
-
+                    </ContainerSpaceRowProduct>
                 </RowProduct>
-
             </ContainerProduct>
         )
+    }
+
+    handleDialogProduct(product: Product): void {
+        this.model.selectedProduct = product
+        this.model.openDialogProduct = true
     }
 
     dialogProduct(): JSX.Element {
         return (
             <Dialog open={this.model.openDialogProduct} onClose={() => this.model.openDialogProduct = false}>
                 <DialogContent>
-                    <StyledImage src="https://exame.com/wp-content/uploads/2020/05/mafe-studio-LV2p9Utbkbw-unsplash.jpg?quality=70&strip=info"></StyledImage>
+                    {this.model.selectedProduct?.img_url !== '' ?
+                        <div style={{ position: 'relative' }}>
+                            <StyledImage src={this.model.selectedProduct?.img_url} />
+                            <BackgroundImage src={this.model.selectedProduct?.img_url} />
+                        </div>
+                        : <></>}
+
                     <Typography variant="h6" gutterBottom style={{ color: '#000' }}>
-                        Hamburguer
+                        {this.model.selectedProduct?.title}
                     </Typography>
                     <ProductDescriptionDialog >
-                        {"Hamburgusdfsdfsdfsdfsdfsder\nHamburguer\nHamburguer\nHamburguer\nHamburguer\nHamburguer\nHamburguer\nHamburguer"}
+                        {this.model.selectedProduct?.description}
                     </ProductDescriptionDialog>
-                    <Divider light style={{ marginTop: '16px' }} />
-                    <StyledTextField label='Observação' multiline rowsMax={3} rows={3} variant='filled' InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
-                    </StyledTextField>
+                    {this.model.selectedProduct?.optional_sections.map((section) => {
+                        return this.optionalSection(section)
+                    })}
+                    {this.model.settings?.enterprise.observation_enabled ?
+                        <>
+                            <Divider light style={{ marginTop: '16px' }} />
+                            <StyledTextField label='Observação' multiline rowsMax={3} rows={3} variant='filled' InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+                            </StyledTextField>
+                        </>
+                        : <></>}
+
                     <Divider light style={{ marginTop: '16px' }} />
                     <ContainerSpaceRow>
                         <NumberInput
@@ -99,12 +138,55 @@ class OrderPage extends Component {
                             value={1}
                             InputProps={{ inputProps: { min: 1 }, classes: { underline: 'underline' }, disableUnderline: false }} />
 
-                        <StyledPrimaryButton style={{ width: '200px', minWidth: '200px', marginBottom: '16px', fontSize: '14px' }}>{"Adicionar • R$ 15,00"}</StyledPrimaryButton>
+                        <StyledPrimaryButton style={{ width: '200px', minWidth: '200px', marginBottom: '16px', fontSize: '14px' }}>{`Adicionar • R$ ${this.model.selectedProduct?.price}`}</StyledPrimaryButton>
                     </ContainerSpaceRow>
 
                 </DialogContent>
 
             </Dialog>
+        )
+    }
+
+    optionalSection(optionalSection: OptionalSection): JSX.Element {
+        return (
+            <div key={optionalSection.id} >
+                <Box width="100%" style={{ marginTop: '8px', background: '#fafafa' }} paddingLeft={1}>
+                    <Row style={{ alignItems: 'flex-end' }}>
+                        <Typography variant="h6" style={{ color: '#000' }}>
+                            {optionalSection.name}
+                        </Typography>
+                        <Typography variant="subtitle1" gutterBottom style={{ marginLeft: '8px', fontSize: '12px' }}>
+                            {`Selecione de ${optionalSection.min} até ${optionalSection.max} itens`}
+                        </Typography>
+                    </Row>
+
+                </Box>
+
+                {optionalSection.products?.map((product) => {
+                    return this.optionalProduct(product)
+                })}
+            </div>
+        )
+    }
+
+    optionalProduct(optionalProduct: Optional): JSX.Element {
+        return (
+            <MuiThemeProvider theme={this.theme}>
+                <ContainerSpaceRowProduct key={optionalProduct.id} >
+                    <Row style={{ alignSelf: 'flex-start' }}>
+                        <Checkbox
+                            color="primary"
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                        />
+                        <Typography variant="subtitle1" >
+                            {optionalProduct.name}
+                        </Typography>
+                    </Row>
+                    <Typography variant="subtitle1" style={{ fontSize: '14px' }}>
+                        {'R$ ' + optionalProduct.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace('.', ',')}
+                    </Typography>
+                </ContainerSpaceRowProduct>
+            </MuiThemeProvider>
         )
     }
 
@@ -127,8 +209,8 @@ class OrderPage extends Component {
 
     snackbarShopCart(): JSX.Element {
         return (<Snackbar open={true}>
-            <SnackbarContainer>
-                <Row onClick={() => this.model.openDialogCart = true} style={{cursor: 'pointer'}}>
+            <SnackbarContainer onClick={() => this.model.openDialogCart = true} style={{ cursor: 'pointer' }}>
+                <Row >
                     <IconButton color="inherit"  >
                         <ShopIcon />
                     </IconButton>
@@ -136,9 +218,9 @@ class OrderPage extends Component {
                         Meu Carrinho
                 </Typography>
                 </Row>
-                <IconButton color="inherit"  >
-                    <SendIcon />
-                </IconButton>
+                <Typography variant="subtitle1" style={{ marginRight: '16px', color: '#fff' }}>
+                    0 itens
+                </Typography>
 
             </SnackbarContainer>
         </Snackbar>)

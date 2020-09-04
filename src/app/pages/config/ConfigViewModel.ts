@@ -61,7 +61,7 @@ export class ConfigViewModel {
         try {
             this.enterprise = (await this.getSavedEnterpriseUserUseCase.execute()).user?.enterprise
 
-            const result = (await this.getSavedEnterpriseUserUseCase.execute()).user?.enterprise?.settings.toString()
+            const result = this.enterprise?.settings.toString()
 
             this.enterpriseSettings = JSON.parse(result!)
 

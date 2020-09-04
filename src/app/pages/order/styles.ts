@@ -119,12 +119,36 @@ export const ContainerSpaceRow = styled.div`
     }
 `;
 
+export const ContainerSpaceRowProduct = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const StyledImage = styled.img`
     height: 100%; 
     width: 100%; 
     max-height: 200px;
     object-fit: scale-down;
-    background: #eeeeee;
+    position: absolute;
+    z-index: 2;
+`;
+
+export const BackgroundImage = styled.img`
+    height: 100%; 
+    width: 100%; 
+    max-height: 200px;
+    object-fit: cover;
+    border: inherit;
+    border-color: transparent;
+    background: inherit;
+    background-clip: border-box;
+    -webkit-clip-path: inset(0);
+    clip-path: inset(0);
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
 `;
 
 export const NumberInput = styled(StyledTextField)`

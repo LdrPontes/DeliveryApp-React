@@ -6,7 +6,6 @@ import { EnterpriseSettings } from "../../../domain/entities/EnterpriseSettings"
 
 export class EnterpriseRepository implements IEnterpriseRepository {
 
-
     async save(category_id: number, enterprise_id: number, name: string, document_type: string, document: string, img: string, img_type: string, address: string): Promise<Enterprise> {
         try {
 
@@ -69,6 +68,18 @@ export class EnterpriseRepository implements IEnterpriseRepository {
             })
 
             return response.data.success
+
+        } catch (error) {
+            throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
+        }
+    }
+
+    async readByCode(code: string): Promise<Enterprise> {
+        try {
+
+            const response = await api.get(`/enterprise/read/code/${code}`)
+
+            return response.data
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)

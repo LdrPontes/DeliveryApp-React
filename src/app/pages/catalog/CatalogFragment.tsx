@@ -64,7 +64,7 @@ class CatalogFragment extends Component {
                         </Typography>
                         <Horizontal>
                             <Box minWidth={200} width={470} marginTop={2} marginRight={1} alignSelf='center'>
-                                <StyledTextField label='Mensagem da tela inicial' onChange={(e) => this.model.msgStart = e.target.value} helperText={`${this.model.lengthMsgStart} caracteres restantes`} multiline rowsMax={3} rows={3} variant='filled' InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+                                <StyledTextField label='Mensagem da tela inicial' onChange={(e) => this.model.msgStart = e.target.value} helperText={`${this.model.lengthMsgStart} caracteres restantes`} multiline rowsMax={3} rows={3} variant='filled'  inputProps={{ maxLength: 144 }} InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
                                 </StyledTextField>
                             </Box>
                             <Box minWidth={200} width={470} marginTop={2} alignSelf='center'>

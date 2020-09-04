@@ -17,7 +17,7 @@ export default function Routes() {
                     <Route path="/login" exact component={LoginPage} />
                     <Route path="/register" exact component={RegisterPage} />
                     <Route path="/enterprise-register" exact component={EnterpriseRegisterPage} />
-                    <Route path="/pedido/:name" exact component={OrderPage} />
+                    <Route path="/pedido/:code" exact component={OrderPage} />
                 </Switch>
             </div>
         </Router>
