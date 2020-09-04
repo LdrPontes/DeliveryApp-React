@@ -110,7 +110,7 @@ export class OptionalFragmentViewModel {
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            this.sections = (await this.readOptionalSectionUseCase.execute(new ReadOptionalSectionParams(user!.id, this.search))).sections
+            this.sections = (await this.readOptionalSectionUseCase.execute(new ReadOptionalSectionParams(user!.enterprise!.id, this.search))).sections
 
         } catch (error) {
             if (error instanceof AppError) {
@@ -143,7 +143,7 @@ export class OptionalFragmentViewModel {
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            await this.saveOptionalSectionUseCase.execute(new SaveOptionalSectionParams(this.sectionName, user!.id, Number(this.sectionMin), Number(this.sectionMax)))
+            await this.saveOptionalSectionUseCase.execute(new SaveOptionalSectionParams(this.sectionName, user!.enterprise!.id, Number(this.sectionMin), Number(this.sectionMax)))
 
             this.sectionName = ''
             this.sectionMin = ''
@@ -240,7 +240,7 @@ export class OptionalFragmentViewModel {
 
             console.log(user!.id)
 
-            await this.saveOptionalUseCase.execute(new SaveOptionalParams(this.optionalName, user!.id, this.optionalSectionId, Number(this.optionalPrice)))
+            await this.saveOptionalUseCase.execute(new SaveOptionalParams(this.optionalName, user!.enterprise!.id, this.optionalSectionId, Number(this.optionalPrice)))
 
             this.optionalName = ''
             this.optionalPrice = ''

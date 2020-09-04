@@ -128,7 +128,7 @@ export class ProductFragmentViewModel {
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            await this.saveProductSectionUseCase.execute(new SaveProductSectionParams(this.productSectionName, user!.id))
+            await this.saveProductSectionUseCase.execute(new SaveProductSectionParams(this.productSectionName, user!.enterprise!.id))
 
             this.productSectionName = ''
 
@@ -181,7 +181,7 @@ export class ProductFragmentViewModel {
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            this.sections = (await this.readProductSectionUseCase.execute(new ReadProductSectionParams(user!.id, this.search))).sections
+            this.sections = (await this.readProductSectionUseCase.execute(new ReadProductSectionParams(user!.enterprise!.id, this.search))).sections
 
         } catch (error) {
             if (error instanceof AppError) {
@@ -222,7 +222,7 @@ export class ProductFragmentViewModel {
 
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
-            this.optionals = (await this.readOptionalSectionUseCase.execute(new ReadOptionalSectionParams(user!.id, ''))).sections
+            this.optionals = (await this.readOptionalSectionUseCase.execute(new ReadOptionalSectionParams(user!.enterprise!.id, ''))).sections
 
         } catch (error) {
             if (error instanceof AppError) {
@@ -288,7 +288,7 @@ export class ProductFragmentViewModel {
             const user = (await this.getSavedEnterpriseUserUseCase.execute()).user
 
             await this.saveProductUseCase.execute(new SaveProductParams(this.productTitle, this.productDescription, this.productImg, this.productImgType,
-                Number(this.productPrice), user!.id, this.selectedProductSectionId, this.selectedOptionals))
+                Number(this.productPrice), user!.enterprise!.id, this.selectedProductSectionId, this.selectedOptionals))
 
             this.productTitle = ''
             this.productDescription = ''
