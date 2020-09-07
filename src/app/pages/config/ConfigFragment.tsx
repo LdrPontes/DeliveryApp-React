@@ -252,6 +252,21 @@ class ConfigFragment extends Component {
                     </Typography>
                     <Horizontal>
                         <Typography variant="body1" style={{ marginTop: '8px', color: '#424242' }} gutterBottom>
+                            Permitir retirada no local?
+                        </Typography>
+                        <FormControlLabel
+                            value="start"
+                            control={<CustomSwitch checked={this.model.enterpriseSettings?.delivery?.pickup_on_site} onChange={(e) => this.handlePickupOnSite(e)} color="primary" />}
+                            label={
+                                <Typography variant="body2" style={{ color: '#BDBDBD' }}>
+                                    {this.model.enterpriseSettings?.delivery?.pickup_on_site ? 'Habilitado' : 'Desabilitado'}
+                                </Typography>
+                            }
+                            labelPlacement="start"
+                        />
+                    </Horizontal>
+                    <Horizontal>
+                        <Typography variant="body1" style={{ marginTop: '8px', color: '#424242' }} gutterBottom>
                             Pedido mínimo:
                         </Typography>
                         <NumberInput
@@ -495,6 +510,12 @@ class ConfigFragment extends Component {
     handleCheckAskCPF(e: React.ChangeEvent<HTMLInputElement>): void {
         if (this.model.enterpriseSettings?.enterprise?.ask_cpf !== undefined) {
             this.model.enterpriseSettings.enterprise.ask_cpf = e.target.checked
+        }
+    }
+
+    handlePickupOnSite(e: React.ChangeEvent<HTMLInputElement>): void {
+        if (this.model.enterpriseSettings?.delivery?.pickup_on_site !== undefined) {
+            this.model.enterpriseSettings.delivery.pickup_on_site = e.target.checked
         }
     }
 

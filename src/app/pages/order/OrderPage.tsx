@@ -10,7 +10,12 @@ import { ProductSection } from "../../../domain/entities/ProductSection";
 import { Product } from "../../../domain/entities/Product";
 import { OptionalSection } from "../../../domain/entities/OptionalSection";
 import { Optional } from "../../../domain/entities/Optional";
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import InputMask from 'react-input-mask';
 interface MatchParams {
     code?: string
 }
@@ -53,7 +58,7 @@ class OrderPage extends Component<Props> {
                 </ContainerSection>
                 {this.dialogProduct()}
                 {this.dialogShopCart()}
-                {!this.model.openDialogProduct ? this.snackbarShopCart() : <></>}
+                {!this.model.openDialogProduct && !this.model.openDialogCart ? this.snackbarShopCart() : <></>}
             </Container>
         );
     }
@@ -87,7 +92,7 @@ class OrderPage extends Component<Props> {
                             </ProductDescription>
                         </div>
                         <Typography variant="subtitle1" style={{ fontSize: '20px' }}>
-                            {'R$ ' + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace('.', ',')}
+                            {"R$ " + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace(".", ",")}
                         </Typography>
                     </ContainerSpaceRowProduct>
                 </RowProduct>
@@ -97,6 +102,7 @@ class OrderPage extends Component<Props> {
 
     handleDialogProduct(product: Product): void {
         this.model.selectedProduct = product
+        this.model.setDefaultProductValues()
         this.model.openDialogProduct = true
     }
 
@@ -123,7 +129,19 @@ class OrderPage extends Component<Props> {
                     {this.model.settings?.enterprise.observation_enabled ?
                         <>
                             <Divider light style={{ marginTop: '16px' }} />
-                            <StyledTextField label='Observação' multiline rowsMax={3} rows={3} variant='filled' InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+
+                            <StyledTextField
+                                value={this.model.observation}
+                                onChange={(e) => this.model.observation = e.target.value}
+                                helperText={`${this.model.lengthObservation} caracteres restantes`}
+                                inputProps={{ maxLength: 144 }}
+                                label='Observação'
+                                multiline
+                                rowsMax={3}
+                                rows={3}
+                                variant='filled'
+                                InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+
                             </StyledTextField>
                         </>
                         : <></>}
@@ -135,16 +153,23 @@ class OrderPage extends Component<Props> {
                             variant="filled"
                             margin="dense"
                             type="number"
-                            value={1}
+                            value={this.model.quantity}
+                            onChange={(e) => this.handleChangeQuantity(e)}
                             InputProps={{ inputProps: { min: 1 }, classes: { underline: 'underline' }, disableUnderline: false }} />
 
-                        <StyledPrimaryButton style={{ width: '200px', minWidth: '200px', marginBottom: '16px', fontSize: '14px' }}>{`Adicionar • R$ ${this.model.selectedProduct?.price}`}</StyledPrimaryButton>
+                        <StyledPrimaryButton onClick={() => this.model.addProductToCart()} style={{ width: '200px', minWidth: '200px', marginBottom: '16px', fontSize: '14px' }}>
+                            {`Adicionar • R$ ${(this.model.productPrice + this.model.totalPrice).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                        </StyledPrimaryButton>
                     </ContainerSpaceRow>
 
                 </DialogContent>
 
             </Dialog>
         )
+    }
+
+    handleChangeQuantity(e: any): void {
+        this.model.quantity = e.target.value
     }
 
     optionalSection(optionalSection: OptionalSection): JSX.Element {
@@ -163,18 +188,20 @@ class OrderPage extends Component<Props> {
                 </Box>
 
                 {optionalSection.products?.map((product) => {
-                    return this.optionalProduct(product)
+                    return this.optionalProduct(optionalSection, product)
                 })}
             </div>
         )
     }
 
-    optionalProduct(optionalProduct: Optional): JSX.Element {
+    optionalProduct(section: OptionalSection, optionalProduct: Optional): JSX.Element {
         return (
-            <MuiThemeProvider theme={this.theme}>
-                <ContainerSpaceRowProduct key={optionalProduct.id} >
+            <MuiThemeProvider theme={this.theme} key={optionalProduct.id} >
+                <ContainerSpaceRowProduct >
                     <Row style={{ alignSelf: 'flex-start' }}>
                         <Checkbox
+                            checked={this.model.isOptionalSelected(optionalProduct.id)}
+                            onChange={(e) => this.model.handleSelectOptional(section.max, section.min, section.id, optionalProduct)}
                             color="primary"
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         />
@@ -183,7 +210,7 @@ class OrderPage extends Component<Props> {
                         </Typography>
                     </Row>
                     <Typography variant="subtitle1" style={{ fontSize: '14px' }}>
-                        {'R$ ' + optionalProduct.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace('.', ',')}
+                        {'R$ ' + optionalProduct.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </Typography>
                 </ContainerSpaceRowProduct>
             </MuiThemeProvider>
@@ -191,39 +218,218 @@ class OrderPage extends Component<Props> {
     }
 
     dialogShopCart(): JSX.Element {
+        console.log('Render Cart')
         return (
-            <Dialog open={this.model.openDialogCart} onClose={() => this.model.openDialogCart = false}>
+            <Dialog fullWidth open={this.model.openDialogCart} onClose={() => this.model.openDialogCart = false}>
                 <DialogContent>
+                    <Box style={{ marginTop: '8px', background: '#fafafa' }} paddingLeft={1}>
+                        <Typography variant="h6" style={{ color: '#000' }}>
+                            Itens
+                        </Typography>
+                    </Box>
+                    {this.model.cart.products.length > 0 ? this.model.cart.products.map((product, idx) => {
+                        return (
+                            <Row key={idx}>
+                                <div style={{ width: '100%', marginLeft: '8px', marginBottom: '8px' }}>
+                                    <ContainerSpaceRowProduct  >
+                                        <Typography variant="h6" style={{ fontSize: '16px' }}>
+                                            {product.name}
+                                        </Typography>
+                                        <Typography variant="subtitle1" style={{ fontSize: '14px' }}>
+                                            {'R$ ' + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace(".", ",")}
+                                        </Typography>
+                                    </ContainerSpaceRowProduct>
+                                    {product.optionals.map((optional, idx) => {
+                                        return (<ContainerSpaceRowProduct key={idx} >
+                                            <Typography variant="subtitle2" style={{ fontSize: '14px' }}>
+                                                {'• ' + optional.name}
+                                            </Typography>
+                                            <Typography variant="subtitle2" style={{ fontSize: '14px' }}>
+                                                {'R$ ' + optional.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                            </Typography>
+                                        </ContainerSpaceRowProduct>)
+                                    })}
+                                    {product.observation !== undefined && product.observation !== ''
+                                        ?
+                                        <Typography variant="subtitle1" style={{ fontSize: '14px', color: '#757575' }}>
+                                            {'- ' + product.observation}
+                                        </Typography>
+                                        :
+                                        <></>
+                                    }
+
+                                </div>
+                                <IconButton style={{ alignSelf: 'flex-start' }} onClick={() => this.model.deleteProductCart(idx)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Row>
+
+                        )
+                    }) :
+                        <Typography variant="subtitle1" style={{ marginLeft: '8px', fontSize: '14px', color: '#757575' }}>
+                            O carrinho está vazio
+                        </Typography>
+                    }
+                    <ContainerSpaceRowProduct style={{ marginTop: '8px' }}>
+                        <Typography variant="h6" style={{ marginLeft: '8px', color: '#000' }}>
+                            TOTAL
+                        </Typography>
+                        <Typography variant="subtitle2" style={{ fontSize: '16px' }}>
+                            {"R$ " + this.model.totalCartPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </Typography>
+                    </ContainerSpaceRowProduct>
+
+                    <Box style={{ marginTop: '16px', background: '#fafafa' }} paddingLeft={1}>
+                        <Typography variant="h6" style={{ color: '#000' }}>
+                            Pedido
+                        </Typography>
+                    </Box>
+                    <StyledTextField
+                        variant="filled"
+                        label="Seu Nome"
+                        margin="dense"
+                        type="text"
+                        fullWidth
+                        InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+
+                    </StyledTextField>
+                    <InputMask mask="(99) 9999-99999" value={this.model.telephone} maskChar=" " onChange={(e) => this.model.telephone = e.target.value}>
+                        {() => <StyledTextField
+                            error={this.model.errorTelephone !== ''}
+                            helperText={this.model.errorTelephone}
+                            variant="filled"
+                            label="Telefone"
+                            margin="dense"
+                            InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                            type="tel" />}
+                    </InputMask>
+
+                    {this.model.settings?.enterprise.ask_cpf ?
+                        <InputMask mask={"999.999.999-99"} value={this.model.cpf} maskChar=" " onChange={(e) => { this.model.cpf = e.target.value }}>
+                            {() => <StyledTextField
+                                label={'CPF na nota?'}
+                                variant="filled"
+                                margin="dense"
+                                error={this.model.errorCpf !== ''}
+                                helperText={this.model.errorCpf}
+                                 InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                                type="text" ></StyledTextField>}
+                        </InputMask>
+                        : <></>
+                    }
+
+
+                    <Box style={{ marginTop: '16px', background: '#fafafa' }} paddingLeft={1}>
+                        <Typography variant="h6" style={{ color: '#000' }}>
+                            Entrega
+                        </Typography>
+                    </Box>
+
+                    <MuiThemeProvider theme={this.theme}>
+                        <FormControl component="fieldset" style={{ marginLeft: '8px' }} >
+                            <RadioGroup
+                                value={this.model.selectedDeliveryType.toString()}
+                                onChange={(e) => { this.model.selectedDeliveryType = Number(e.target.value) }}
+                            >
+                                {this.model.settings?.delivery.pickup_on_site ? <FormControlLabel value="0" control={<Radio color="primary" />} label="Retirar no local" /> : <></>}
+                                <FormControlLabel value="1" control={<Radio color="primary" />} label="Delivery" />
+                            </RadioGroup>
+                        </FormControl>
+                    </MuiThemeProvider>
+                    {(this.model.errorCep === '' || this.model.errorCep !== '') && this.model.selectedDeliveryType === 1 ? //Gambiarra para o Mobx atualizar caso tenha erro
+                        <>
+                            <ContainerSpaceRow>
+                                <InputMask mask='99999-999' value={this.model.cep} maskChar=" " onChange={(e) => this.model.handleAddressByCep(e)} >
+                                    {() => <StyledTextField
+                                        label="CEP"
+                                        error={this.model.errorCep !== ''}
+                                        helperText={this.model.errorCep}
+                                        variant="filled"
+                                        margin="dense"
+                                        style={{ marginRight: '16px' }}
+                                        InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                                        type="text" />}
+                                </InputMask>
+                                <NumberInput
+                                    label="Número"
+                                    variant="filled"
+                                    type="number"
+                                    margin="dense"
+                                    error={this.model.errorNumber !== ''}
+                                    helperText={this.model.errorNumber}
+                                    InputProps={{ inputProps: { min: 0 }, classes: { underline: 'underline' }, disableUnderline: false }}
+                                    value={this.model.number}
+                                    onChange={(e) => this.model.number = e.target.value} />
+                            </ContainerSpaceRow>
+
+                            <ContainerSpaceRow>
+                                <StyledTextField
+                                    value={this.model.address}
+                                    disabled
+                                    label="Endereço"
+                                    variant="filled"
+                                    type="text"
+                                    margin="dense"
+                                    style={{ maxWidth: '268px' }}
+                                    InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                                />
+
+                                <StyledTextField
+                                    value={this.model.complement}
+                                    label="Complemento"
+                                    variant="filled"
+                                    type="text"
+                                    margin="dense"
+                                    style={{ maxWidth: '268px' }}
+                                    InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                                />
+
+                            </ContainerSpaceRow></>
+
+                        : <></>
+                    }
+                    <Box style={{ marginTop: '16px', background: '#fafafa' }} paddingLeft={1}>
+                        <Typography variant="h6" style={{ color: '#000' }}>
+                            Pagamento
+                        </Typography>
+                    </Box>
+                    <MuiThemeProvider theme={this.theme}>
+                        <FormControl component="fieldset" style={{ marginLeft: '8px' }}>
+                            <RadioGroup value={this.model.selectedPaymentType.toString()} onChange={(e) => this.model.selectedPaymentType = Number(e.target.value)}>
+                                {this.model.settings?.enterprise.accept_money ? <FormControlLabel value="0" control={<Radio color="primary" />} label="Dinheiro" /> : <></>}
+                                {this.model.settings?.enterprise.accept_debit_card ? <FormControlLabel value="1" control={<Radio color="primary" />} label="Débito" /> : <></>}
+                                {this.model.settings?.enterprise.accept_credit_card ? <FormControlLabel value="2" control={<Radio color="primary" />} label="Crédito" /> : <></>}
+                            </RadioGroup>
+                        </FormControl>
+                    </MuiThemeProvider>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <StyledPrimaryButton style={{ maxWidth: '400px' }}>Enviar Pedido</StyledPrimaryButton>
+                    </div>
 
                 </DialogContent>
             </Dialog>
         )
     }
 
-    dialogFinishOrder(): JSX.Element {
-        return (
-            <>
-            </>
-        )
-    }
-
     snackbarShopCart(): JSX.Element {
-        return (<Snackbar open={true}>
-            <SnackbarContainer onClick={() => this.model.openDialogCart = true} style={{ cursor: 'pointer' }}>
-                <Row >
-                    <IconButton color="inherit"  >
-                        <ShopIcon />
-                    </IconButton>
-                    <Typography variant="subtitle1" style={{ marginLeft: '16px', color: '#fff' }}>
-                        Meu Carrinho
+        return (
+            <Snackbar open={true}>
+                <SnackbarContainer onClick={() => this.model.openDialogCart = true} style={{ cursor: 'pointer' }}>
+                    <Row >
+                        <IconButton color="inherit"  >
+                            <ShopIcon />
+                        </IconButton>
+                        <Typography variant="subtitle1" style={{ marginLeft: '16px', color: '#fff' }}>
+                            Meu Carrinho
                 </Typography>
-                </Row>
-                <Typography variant="subtitle1" style={{ marginRight: '16px', color: '#fff' }}>
-                    0 itens
-                </Typography>
+                    </Row>
+                    <Typography variant="subtitle1" style={{ marginRight: '16px', color: '#fff' }}>
+                        {this.model.cart.products.length + (this.model.cart.products.length === 1 ? ' item' : ' itens')}
+                    </Typography>
 
-            </SnackbarContainer>
-        </Snackbar>)
+                </SnackbarContainer>
+            </Snackbar>
+        )
     }
 
 }

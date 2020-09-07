@@ -11,6 +11,7 @@ export interface DeliverySettings {
     delivery_fee: number;
     delivery_time_start: number;
     delivery_time_end: number;
+    pickup_on_site: boolean;
 }
 
 export interface EnterpriseSettingsClass {
