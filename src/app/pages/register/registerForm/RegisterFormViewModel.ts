@@ -80,6 +80,10 @@ export class RegisterFormViewModel {
         this.isSuccess = false
     }
 
+    private isValidPhone(phone: string): boolean {
+        const brazilianPhoneRegex = /\(\d{2}\)\s\d{4,5}\-\d{4}/g
+        return brazilianPhoneRegex.test(phone)
+    }
 
     private hasFieldErrors(): boolean{
         
@@ -93,7 +97,12 @@ export class RegisterFormViewModel {
             this.errorTelephone = true
             this.errorTelephoneMsg = 'Informe um telephone'
             return true
-        }      
+        }    
+        
+        if(!this.isValidPhone(this.telephone)) {
+            this.errorTelephoneMsg = 'Informe um telephone válido'
+            return true
+        }
 
         if(this.email === '') {
             this.errorEmail = true
