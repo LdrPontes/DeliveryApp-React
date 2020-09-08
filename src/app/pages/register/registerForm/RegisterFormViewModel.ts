@@ -81,6 +81,7 @@ export class RegisterFormViewModel {
     }
 
     private isValidPhone(phone: string): boolean {
+        // eslint-disable-next-line
         const brazilianPhoneRegex = /\(\d{2}\)\s\d{4,5}\-\d{4}/g
         return brazilianPhoneRegex.test(phone)
     }
