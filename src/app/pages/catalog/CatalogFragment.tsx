@@ -43,7 +43,8 @@ class CatalogFragment extends Component {
                                 <Typography variant="body1" style={{ marginTop: '16px', marginRight: '16px', color: '#BDBDBD' }} gutterBottom>
                                     https://godelivery.com/pedido/
                                 </Typography>
-                                <StyledTextField error={this.model.errorCode !== ''} helperText={this.model.errorCode} label='Nome' onChange={(e) => this.handleChangeCode(e.target.value)} value={this.model.code.toLowerCase().replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(' ', '-')} variant='filled' margin="dense" InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+                                
+                                <StyledTextField error={this.model.errorCode !== ''} helperText={this.model.errorCode} label='Nome' onChange={(e) => this.handleChangeCode(e.target.value)} value={this.model.code.toLowerCase().replace(this.model.getRegexCode(), '').replace(' ', '-')} variant='filled' margin="dense" InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
                                 </StyledTextField>
                                 <IconButton color="inherit" onClick={() => this.handleCopyUrl()}>
                                     <CopyIcon />

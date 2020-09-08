@@ -81,7 +81,7 @@ export class CatalogViewModel {
             this.errorCode = ''
             this.errorMsgStart = ''
             this.errorMsgEnd = ''
-            
+
             if(this.code === '') {
                 this.errorCode = 'Informe um nome'
                 return
@@ -111,5 +111,10 @@ export class CatalogViewModel {
         } catch (error) {
             this.errorApi = 'Erro ao atualizar o catálogo. Tente novamente'
         }
+    }
+
+    getRegexCode(): RegExp {
+        // eslint-disable-next-line
+        return /[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi
     }
 }
