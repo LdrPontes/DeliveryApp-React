@@ -16,6 +16,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import InputMask from 'react-input-mask';
+
 interface MatchParams {
     code?: string
 }
@@ -91,8 +92,8 @@ class OrderPage extends Component<Props> {
                                 {product.description}
                             </ProductDescription>
                         </div>
-                        <Typography variant="subtitle1" style={{ fontSize: '20px' }}>
-                            {"R$ " + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace(".", ",")}
+                        <Typography variant="subtitle1" style={{ fontSize: '18px', width: '150' }}>
+                            {"R$ " + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </Typography>
                     </ContainerSpaceRowProduct>
                 </RowProduct>
@@ -153,6 +154,8 @@ class OrderPage extends Component<Props> {
                             variant="filled"
                             margin="dense"
                             type="number"
+                            error={this.model.errorQuantity !== ''}
+                            helperText={this.model.errorQuantity}
                             value={this.model.quantity}
                             onChange={(e) => this.handleChangeQuantity(e)}
                             InputProps={{ inputProps: { min: 1 }, classes: { underline: 'underline' }, disableUnderline: false }} />
@@ -172,6 +175,13 @@ class OrderPage extends Component<Props> {
         this.model.quantity = e.target.value
     }
 
+
+    handleDialogCart(): void {
+        this.model.openDialogCart = true
+        this.model.setDefaultCartErrorValues()
+    }
+
+
     optionalSection(optionalSection: OptionalSection): JSX.Element {
         return (
             <div key={optionalSection.id} >
@@ -186,6 +196,12 @@ class OrderPage extends Component<Props> {
                     </Row>
 
                 </Box>
+                {this.model.errorOptional !== undefined && this.model.errorOptional.id === optionalSection.id ?
+                    <Typography variant="subtitle1" gutterBottom style={{ marginLeft: '8px', fontSize: '12px', color: "#d50000" }}>
+                        {this.model.errorOptional.msg}
+                    </Typography>
+                    : <></>
+                }
 
                 {optionalSection.products?.map((product) => {
                     return this.optionalProduct(optionalSection, product)
@@ -218,7 +234,6 @@ class OrderPage extends Component<Props> {
     }
 
     dialogShopCart(): JSX.Element {
-        console.log('Render Cart')
         return (
             <Dialog fullWidth open={this.model.openDialogCart} onClose={() => this.model.openDialogCart = false}>
                 <DialogContent>
@@ -227,31 +242,45 @@ class OrderPage extends Component<Props> {
                             Itens
                         </Typography>
                     </Box>
+                    {this.model.errorProducts !== '' ?
+                        <Typography variant="subtitle1" gutterBottom style={{ marginLeft: '8px', fontSize: '12px', color: "#d50000" }}>
+                            {this.model.errorProducts}
+                        </Typography>
+                        : <></>
+                    }
                     {this.model.cart.products.length > 0 ? this.model.cart.products.map((product, idx) => {
                         return (
                             <Row key={idx}>
-                                <div style={{ width: '100%', marginLeft: '8px', marginBottom: '8px' }}>
+
+                                <div style={{ width: '100%', marginLeft: '16px', marginBottom: '8px' }}>
                                     <ContainerSpaceRowProduct  >
-                                        <Typography variant="h6" style={{ fontSize: '16px' }}>
-                                            {product.name}
+                                        <Typography variant="h6" style={{ fontSize: '15px' }}>
+                                            {product.quantity + "x " + product.name}
                                         </Typography>
-                                        <Typography variant="subtitle1" style={{ fontSize: '14px' }}>
-                                            {'R$ ' + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 }).replace(".", ",")}
-                                        </Typography>
+                                        <div style={{ minWidth: '90px', paddingLeft: '16px' }}>
+                                            <Typography variant="subtitle1" style={{ fontSize: '14px' }}>
+                                                {'R$ ' + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                            </Typography>
+                                        </div>
+
                                     </ContainerSpaceRowProduct>
                                     {product.optionals.map((optional, idx) => {
-                                        return (<ContainerSpaceRowProduct key={idx} >
-                                            <Typography variant="subtitle2" style={{ fontSize: '14px' }}>
-                                                {'• ' + optional.name}
-                                            </Typography>
-                                            <Typography variant="subtitle2" style={{ fontSize: '14px' }}>
-                                                {'R$ ' + optional.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                            </Typography>
-                                        </ContainerSpaceRowProduct>)
+                                        return (
+                                            <ContainerSpaceRowProduct key={idx} >
+                                                <Typography variant="subtitle2" style={{ fontSize: '14px' }}>
+                                                    {'• ' + optional.name}
+                                                </Typography>
+                                                <div style={{ minWidth: '90px', paddingLeft: '16px' }}>
+                                                    <Typography variant="subtitle2" style={{ fontSize: '14px' }}>
+                                                        {'R$ ' + optional.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                    </Typography>
+                                                </div>
+
+                                            </ContainerSpaceRowProduct>)
                                     })}
                                     {product.observation !== undefined && product.observation !== ''
                                         ?
-                                        <Typography variant="subtitle1" style={{ fontSize: '14px', color: '#757575' }}>
+                                        <Typography variant="subtitle1" style={{ wordBreak: 'break-word', fontSize: '14px', color: '#757575' }}>
                                             {'- ' + product.observation}
                                         </Typography>
                                         :
@@ -259,7 +288,7 @@ class OrderPage extends Component<Props> {
                                     }
 
                                 </div>
-                                <IconButton style={{ alignSelf: 'flex-start' }} onClick={() => this.model.deleteProductCart(idx)}>
+                                <IconButton style={{ alignSelf: 'flex-start', marginTop: '16px', height: '24px', width: '24px' }} onClick={() => this.model.deleteProductCart(idx)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Row>
@@ -270,12 +299,13 @@ class OrderPage extends Component<Props> {
                             O carrinho está vazio
                         </Typography>
                     }
+
                     <ContainerSpaceRowProduct style={{ marginTop: '8px' }}>
                         <Typography variant="h6" style={{ marginLeft: '8px', color: '#000' }}>
                             TOTAL
                         </Typography>
                         <Typography variant="subtitle2" style={{ fontSize: '16px' }}>
-                            {"R$ " + this.model.totalCartPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            {"R$ " + this.model.cart.totalCartPrice().toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </Typography>
                     </ContainerSpaceRowProduct>
 
@@ -286,36 +316,45 @@ class OrderPage extends Component<Props> {
                     </Box>
                     <StyledTextField
                         variant="filled"
-                        label="Seu Nome"
+                        label="Nome *"
+                        value={this.model.clientName}
+                        onChange={(e) => this.model.clientName = e.target.value}
+                        error={this.model.errorClientName !== ''}
+                        helperText={this.model.errorClientName}
                         margin="dense"
                         type="text"
                         fullWidth
                         InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
 
                     </StyledTextField>
-                    <InputMask mask="(99) 9999-99999" value={this.model.telephone} maskChar=" " onChange={(e) => this.model.telephone = e.target.value}>
-                        {() => <StyledTextField
-                            error={this.model.errorTelephone !== ''}
-                            helperText={this.model.errorTelephone}
-                            variant="filled"
-                            label="Telefone"
-                            margin="dense"
-                            InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
-                            type="tel" />}
-                    </InputMask>
-
-                    {this.model.settings?.enterprise.ask_cpf ?
-                        <InputMask mask={"999.999.999-99"} value={this.model.cpf} maskChar=" " onChange={(e) => { this.model.cpf = e.target.value }}>
+                    {this.model.errorTelephone !== '' || this.model.errorTelephone === '' ?
+                        <InputMask mask="(99) 9999-99999" value={this.model.telephone} maskChar=" " onChange={(e) => this.model.telephone = e.target.value}>
                             {() => <StyledTextField
-                                label={'CPF na nota?'}
+                                error={this.model.errorTelephone !== ''}
+                                helperText={this.model.errorTelephone}
                                 variant="filled"
+                                label="Telefone *"
                                 margin="dense"
-                                error={this.model.errorCpf !== ''}
-                                helperText={this.model.errorCpf}
-                                 InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
-                                type="text" ></StyledTextField>}
-                        </InputMask>
+                                InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                                type="tel" />}
+                        </InputMask> : <></>}
+
+                    {this.model.errorCpf !== '' || this.model.errorCpf === '' ?
+                        this.model.settings?.enterprise.ask_cpf ?
+                            <InputMask mask={"999.999.999-99"} value={this.model.cpf} maskChar=" " onChange={(e) => { this.model.cpf = e.target.value }}>
+                                {() => <StyledTextField
+                                    label={'CPF na nota?'}
+                                    variant="filled"
+                                    margin="dense"
+                                    error={this.model.errorCpf !== ''}
+                                    helperText={this.model.errorCpf}
+                                    InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
+                                    type="text" ></StyledTextField>}
+                            </InputMask>
+                            : <></>
                         : <></>
+                    }
+                    {
                     }
 
 
@@ -324,7 +363,12 @@ class OrderPage extends Component<Props> {
                             Entrega
                         </Typography>
                     </Box>
-
+                    {this.model.errorDelivery !== '' ?
+                        <Typography variant="subtitle1" gutterBottom style={{ marginLeft: '8px', fontSize: '12px', color: "#d50000" }}>
+                            {this.model.errorDelivery}
+                        </Typography>
+                        : <></>
+                    }
                     <MuiThemeProvider theme={this.theme}>
                         <FormControl component="fieldset" style={{ marginLeft: '8px' }} >
                             <RadioGroup
@@ -336,8 +380,12 @@ class OrderPage extends Component<Props> {
                             </RadioGroup>
                         </FormControl>
                     </MuiThemeProvider>
+
                     {(this.model.errorCep === '' || this.model.errorCep !== '') && this.model.selectedDeliveryType === 1 ? //Gambiarra para o Mobx atualizar caso tenha erro
                         <>
+                            <Typography variant="subtitle1" gutterBottom style={{ marginLeft: '8px', fontSize: '18px', color: "#000" }}>
+                                {this.model.settings?.delivery.delivery_fee_type === 0 ? 'Taxa de entrega à combinar': 'Taxa de entrega: R$ ' + this.model.settings?.delivery.delivery_fee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            </Typography>
                             <ContainerSpaceRow>
                                 <InputMask mask='99999-999' value={this.model.cep} maskChar=" " onChange={(e) => this.model.handleAddressByCep(e)} >
                                     {() => <StyledTextField
@@ -380,6 +428,7 @@ class OrderPage extends Component<Props> {
                                     variant="filled"
                                     type="text"
                                     margin="dense"
+                                    onChange={(e) => this.model.complement = e.target.value}
                                     style={{ maxWidth: '268px' }}
                                     InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}
                                 />
@@ -393,6 +442,12 @@ class OrderPage extends Component<Props> {
                             Pagamento
                         </Typography>
                     </Box>
+                    {this.model.errorPayment !== '' ?
+                        <Typography variant="subtitle1" gutterBottom style={{ marginLeft: '8px', fontSize: '12px', color: "#d50000" }}>
+                            {this.model.errorPayment}
+                        </Typography>
+                        : <></>
+                    }
                     <MuiThemeProvider theme={this.theme}>
                         <FormControl component="fieldset" style={{ marginLeft: '8px' }}>
                             <RadioGroup value={this.model.selectedPaymentType.toString()} onChange={(e) => this.model.selectedPaymentType = Number(e.target.value)}>
@@ -403,7 +458,7 @@ class OrderPage extends Component<Props> {
                         </FormControl>
                     </MuiThemeProvider>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <StyledPrimaryButton style={{ maxWidth: '400px' }}>Enviar Pedido</StyledPrimaryButton>
+                        <StyledPrimaryButton onClick={() => this.handleSendOrder()} style={{ maxWidth: '400px' }}>Enviar Pedido</StyledPrimaryButton>
                     </div>
 
                 </DialogContent>
@@ -414,7 +469,7 @@ class OrderPage extends Component<Props> {
     snackbarShopCart(): JSX.Element {
         return (
             <Snackbar open={true}>
-                <SnackbarContainer onClick={() => this.model.openDialogCart = true} style={{ cursor: 'pointer' }}>
+                <SnackbarContainer onClick={() => this.handleDialogCart()} style={{ cursor: 'pointer' }}>
                     <Row >
                         <IconButton color="inherit"  >
                             <ShopIcon />
@@ -430,6 +485,13 @@ class OrderPage extends Component<Props> {
                 </SnackbarContainer>
             </Snackbar>
         )
+    }
+
+    handleSendOrder(): void {
+        const url = this.model.sendOrderToEnterpriseByWhatsapp()
+        if(url !== '') {
+            window.open(url, '_blank');
+        }
     }
 
 }
