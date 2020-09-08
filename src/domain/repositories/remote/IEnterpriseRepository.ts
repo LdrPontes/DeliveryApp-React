@@ -1,7 +1,9 @@
 import { Enterprise } from "../../entities/Enterprise";
 import { EnterpriseSettings } from "../../entities/EnterpriseSettings";
+import { EnterpriseCatalog } from "../../entities/EnterpriseCatalog";
 
 export interface IEnterpriseRepository {
+    updateCatalog(id: number, catalog: EnterpriseCatalog, code: string): Promise<boolean>
     readByCode(code: string): Promise<Enterprise>
     updateSettings(id: number, settings: EnterpriseSettings): Promise<boolean>
     update(id: number, name: string, address: string, category_id: number, img?: string, img_type?: string): Promise<Enterprise>

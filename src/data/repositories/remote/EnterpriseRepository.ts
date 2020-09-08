@@ -3,6 +3,7 @@ import api from "../utils/RemoteConnection";
 import { Enterprise } from "../../../domain/entities/Enterprise";
 import { AppError } from "../../../domain/utils/AppError";
 import { EnterpriseSettings } from "../../../domain/entities/EnterpriseSettings";
+import { EnterpriseCatalog } from "../../../domain/entities/EnterpriseCatalog";
 
 export class EnterpriseRepository implements IEnterpriseRepository {
 
@@ -26,7 +27,9 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 response.data.document_type,
                 response.data.document,
                 response.data.logo_url,
-                response.data.address, response.data.settings)
+                response.data.address,
+                response.data.settings,
+                response.data.code)
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
@@ -52,7 +55,8 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 response.data.document,
                 response.data.logo_url,
                 response.data.address,
-                response.data.settings)
+                response.data.settings,
+                response.data.code)
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
@@ -73,6 +77,23 @@ export class EnterpriseRepository implements IEnterpriseRepository {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
         }
     }
+
+    async updateCatalog(id: number, catalog: EnterpriseCatalog, code: string): Promise<boolean> {
+        try {
+
+            const response = await api.put('/enterprise/update/catalog', {
+                id: id,
+                catalog: catalog,
+                code: code
+            })
+
+            return response.data.success
+
+        } catch (error) {
+            throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
+        }
+    }
+
 
     async readByCode(code: string): Promise<Enterprise> {
         try {
