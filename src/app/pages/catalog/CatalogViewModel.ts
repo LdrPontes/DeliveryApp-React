@@ -34,6 +34,15 @@ export class CatalogViewModel {
     code = ''
 
     @observable
+    errorCode = ''
+
+    @observable
+    errorMsgStart = ''
+
+    @observable 
+    errorMsgEnd = ''
+
+    @observable
     errorApi = ''
 
     @observable
@@ -69,12 +78,31 @@ export class CatalogViewModel {
     @action
     async updateCatalog(): Promise<void> {
         try {
+            this.errorCode = ''
+            this.errorMsgStart = ''
+            this.errorMsgEnd = ''
+            
+            if(this.code === '') {
+                this.errorCode = 'Informe um nome'
+                return
+            }
+
+            if(this.msgStart === '') {
+                this.errorMsgStart = 'Informe uma mensagem'
+                return
+            }
+
+            if(this.msgEnd === '') {
+                this.errorMsgEnd = 'Informe uma mensagem'
+                return
+            }
+
             this.loading = true
 
             this.enterpriseCatalog!.color = this.selectedColor
             this.enterpriseCatalog!.start_msg = this.msgStart
             this.enterpriseCatalog!.end_msg = this.msgEnd
-            
+
             await this.updateEnterpriseCatalogUseCase.execute(new UpdateEnterpriseCatalogParams(this.enterprise!.id, this.enterpriseCatalog!, this.code))
 
             this.loading = false

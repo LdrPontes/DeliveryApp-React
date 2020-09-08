@@ -43,7 +43,7 @@ class CatalogFragment extends Component {
                                 <Typography variant="body1" style={{ marginTop: '16px', marginRight: '16px', color: '#BDBDBD' }} gutterBottom>
                                     https://godelivery.com/pedido/
                                 </Typography>
-                                <StyledTextField label='Nome' onChange={(e) => this.handleChangeCode(e.target.value)} value={this.model.code.toLowerCase().replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(' ', '-')} variant='filled' margin="dense" InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+                                <StyledTextField error={this.model.errorCode !== ''} helperText={this.model.errorCode} label='Nome' onChange={(e) => this.handleChangeCode(e.target.value)} value={this.model.code.toLowerCase().replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(' ', '-')} variant='filled' margin="dense" InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
                                 </StyledTextField>
                                 <IconButton color="inherit" onClick={() => this.handleCopyUrl()}>
                                     <CopyIcon />
@@ -86,11 +86,11 @@ class CatalogFragment extends Component {
                         </Typography>
                         <Horizontal>
                             <Box minWidth={200} width={470} marginTop={2} marginRight={1} alignSelf='center'>
-                                <StyledTextField label='Mensagem da tela inicial' value={this.model.msgStart} onChange={(e) => this.model.msgStart = e.target.value} helperText={`${this.model.lengthMsgStart} caracteres restantes`} multiline rowsMax={3} rows={3} variant='filled' inputProps={{ maxLength: 144 }} InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+                                <StyledTextField error={this.model.errorMsgStart !== ''}  label='Mensagem da tela inicial' value={this.model.msgStart} onChange={(e) => this.model.msgStart = e.target.value} helperText={`${this.model.lengthMsgStart} caracteres restantes`} multiline rowsMax={3} rows={3} variant='filled' inputProps={{ maxLength: 144 }} InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
                                 </StyledTextField>
                             </Box>
                             <Box minWidth={200} width={470} marginTop={2} alignSelf='center'>
-                                <StyledTextField label='Mensagem após pedido' value={this.model.msgEnd} onChange={(e) => this.model.msgEnd = e.target.value} helperText={`${this.model.lengthMsgEnd} caracteres restantes`} multiline rowsMax={3} rows={3} variant='filled' inputProps={{ maxLength: 144 }} InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
+                                <StyledTextField error={this.model.errorMsgEnd !== ''} label='Mensagem após pedido' value={this.model.msgEnd} onChange={(e) => this.model.msgEnd = e.target.value} helperText={`${this.model.lengthMsgEnd} caracteres restantes`} multiline rowsMax={3} rows={3} variant='filled' inputProps={{ maxLength: 144 }} InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
                                 </StyledTextField>
                             </Box>
                         </Horizontal>

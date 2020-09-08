@@ -12,7 +12,6 @@ export const Container = styled.div`
 export const Header = styled.div`
     width: 100vw;
     height: 17vh;
-    background: #880e4f;
     display: flex;
     flex-direction: column;
     align-items: center;

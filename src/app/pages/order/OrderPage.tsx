@@ -45,7 +45,7 @@ class OrderPage extends Component<Props> {
     render(): JSX.Element {
         return (
             <Container>
-                <Header>
+                <Header style={{background: this.model.catalog?.color || '#880e4f'}}>
                     <Title>
                         {this.model.enterprise?.name}
                     </Title>

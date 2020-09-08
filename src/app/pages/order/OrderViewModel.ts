@@ -7,6 +7,7 @@ import { EnterpriseSettings } from "../../../domain/entities/EnterpriseSettings"
 import { Optional } from "../../../domain/entities/Optional"
 import { Cart, CartOptional, CartProduct, CartConfig } from "../../../domain/entities/Cart"
 import { GetAddressUseCase, GetAddressParams } from "../../../domain/usecases/address/GetAddressUseCase"
+import { EnterpriseCatalog } from "../../../domain/entities/EnterpriseCatalog"
 
 export class OrderViewModel {
 
@@ -130,6 +131,9 @@ export class OrderViewModel {
     settings?: EnterpriseSettings
 
     @observable
+    catalog?: EnterpriseCatalog
+
+    @observable
     errorApi = ''
 
     @action
@@ -144,6 +148,12 @@ export class OrderViewModel {
             result.settings = JSON.parse(settings)
 
             this.settings = JSON.parse(settings)
+
+            const catalog = result.catalog!.toString()
+
+            result.catalog = JSON.parse(catalog)
+
+            this.catalog = JSON.parse(catalog)
 
             this.enterprise = result
 

@@ -29,7 +29,7 @@ class MainPage extends Component {
     }
 
     render(): JSX.Element {
-        if (isAuthenticated())
+        if (isAuthenticated() && !this.model.logout)
             return this.body()
         else
             return (<Redirect to='/login'></Redirect>)
@@ -54,7 +54,8 @@ class MainPage extends Component {
                     <RightIconContainer>
                         <IconButton
                             edge="end"
-                            color="inherit">
+                            color="inherit"
+                            onClick={() => this.model.handleLogout()}>
                             <ExitToApp />
                         </IconButton>
                     </RightIconContainer>
