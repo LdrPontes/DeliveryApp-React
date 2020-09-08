@@ -138,7 +138,7 @@ class ProductFragment extends Component {
                                                                     </ContainerCardLeft>
                                                                     <ContainerCardRight>
                                                                         <Typography color="textSecondary" variant="h5">
-                                                                            {('R$ ' + product.price).replace('.', ',')}
+                                                                            {'R$ ' + product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                                         </Typography>
                                                                     </ContainerCardRight>
                                                                 </CardContainer>
