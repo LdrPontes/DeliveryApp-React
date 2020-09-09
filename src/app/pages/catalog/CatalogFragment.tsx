@@ -41,7 +41,7 @@ class CatalogFragment extends Component {
                             </Typography>
                             <Horizontal>
                                 <Typography variant="body1" style={{ marginTop: '16px', marginRight: '16px', color: '#BDBDBD' }} gutterBottom>
-                                    https://godelivery.com/pedido/
+                                    https://ldrpontes.netlify.app
                                 </Typography>
                                 
                                 <StyledTextField error={this.model.errorCode !== ''} helperText={this.model.errorCode} label='Nome' onChange={(e) => this.handleChangeCode(e.target.value)} value={this.model.code.toLowerCase().replace(this.model.getRegexCode(), '').replace(' ', '-')} variant='filled' margin="dense" InputProps={{ classes: { underline: 'underline' }, disableUnderline: false }}>
@@ -105,7 +105,7 @@ class CatalogFragment extends Component {
     }
 
     handleCopyUrl(): void {
-        navigator.clipboard.writeText('https://boring-yonath-e07499.netlify.app/pedido/' + this.model.enterprise?.code)
+        navigator.clipboard.writeText('https://ldrpontes.netlify.app/pedido/' + this.model.enterprise?.code)
     }
 
     handleChangeCode(code: string): void {
