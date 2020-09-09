@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://54.204.123.85:3333',
+    baseURL: 'https://api.ldrpontes.me',
     timeout: 100000,
     headers: {
         'Access-Control-Allow-Origin': '*'
