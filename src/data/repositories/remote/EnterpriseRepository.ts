@@ -21,7 +21,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 address: address
             })
 
-            return new Enterprise(response.data.id,
+            const enterprise = new Enterprise(response.data.id,
                 response.data.category_id,
                 response.data.name,
                 response.data.document_type,
@@ -30,6 +30,10 @@ export class EnterpriseRepository implements IEnterpriseRepository {
                 response.data.address,
                 response.data.settings,
                 response.data.code)
+
+            enterprise.catalog = response.data.catalog
+            
+            return enterprise
 
         } catch (error) {
             throw new AppError(error.response.data.status, error.response.data.name, error.response.data.message)
