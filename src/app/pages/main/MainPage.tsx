@@ -29,7 +29,9 @@ class MainPage extends Component {
     }
 
     render(): JSX.Element {
-        if (isAuthenticated() && !this.model.logout)
+        if (this.model.user?.enterprise === null)
+            return (<Redirect to='/enterprise-register'></Redirect>)
+        else if (isAuthenticated() && !this.model.logout)
             return this.body()
         else
             return (<Redirect to='/login'></Redirect>)
@@ -111,15 +113,15 @@ class MainPage extends Component {
                 </div>
             </StyledDrawer>
             <ContentContainer>{
-                    this.model.position === 0 ? <ProductFragment></ProductFragment>
-                :   this.model.position === 1 ? <OptionalFragment></OptionalFragment>
-                :   this.model.position === 2 ? <CatalogFragment></CatalogFragment>
-                :   this.model.position === 4 ? <ProfileFragment></ProfileFragment>
-                :   this.model.position === 5 ? <ConfigFragment></ConfigFragment>
-                :   <></>
-                
-                }
-            
+                this.model.position === 0 ? <ProductFragment></ProductFragment>
+                    : this.model.position === 1 ? <OptionalFragment></OptionalFragment>
+                        : this.model.position === 2 ? <CatalogFragment></CatalogFragment>
+                            : this.model.position === 4 ? <ProfileFragment></ProfileFragment>
+                                : this.model.position === 5 ? <ConfigFragment></ConfigFragment>
+                                    : <></>
+
+            }
+
             </ContentContainer>
         </Container>)
     }
